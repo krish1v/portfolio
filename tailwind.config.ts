@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -73,7 +72,11 @@ export default {
 				blue: {
 					light: '#60A5FA',      // Light blue
 					DEFAULT: '#3B82F6',    // Default blue
-					dark: '#2563EB'        // Dark blue
+					dark: '#2563EB',       // Dark blue
+					DEFAULT: {
+						primary: '#3B82F6',  // Explicit primary blue
+						foreground: '#FFFFFF' // Optional: foreground color
+					}
 				}
 			},
 			fontFamily: {
