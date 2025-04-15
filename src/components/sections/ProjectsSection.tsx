@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Github, Globe, ExternalLink, Code, ArrowRight } from "lucide-react";
@@ -19,6 +19,7 @@ interface Project {
 
 export function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
 
   const projects: Project[] = [
     {
@@ -75,32 +76,66 @@ export function ProjectsSection() {
     },
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.remove('opacity-0');
+              entry.target.classList.remove('translate-y-10');
+              entry.target.classList.add('opacity-100');
+              entry.target.classList.add('translate-y-0');
+            }, index * 150);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
+    );
+
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach((card) => {
+      observer.observe(card);
+    });
+
+    return () => {
+      projectCards.forEach((card) => {
+        observer.unobserve(card);
+      });
+    };
+  }, []);
+
   return (
     <section id="projects" className="py-24">
-      <div className="section">
+      <div className="section" ref={projectsRef}>
         <h2 className="section-title">Projects</h2>
         <p className="text-muted-foreground max-w-2xl mt-4">
           Here are some of the projects I've worked on. Each one taught me something new and helped me grow as a developer.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <div
               key={project.id}
-              className="card group overflow-hidden"
+              className="project-card card card-hover opacity-0 translate-y-10 transition-all duration-700"
+              style={{ transitionDelay: `${index * 100}ms` }}
               onClick={() => setSelectedProject(project)}
             >
               <div className="relative overflow-hidden h-48">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
-                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-2">
                   {project.liveUrl && (
-                    <Button variant="accent" size="sm" className="rounded-full">
+                    <Button 
+                      variant="accent" 
+                      size="sm" 
+                      className="rounded-full bg-blue hover:bg-blue-dark button-glow"
+                    >
                       <Globe className="h-4 w-4" />
                       <span className="sr-only">Live Site</span>
                     </Button>
@@ -120,7 +155,7 @@ export function ProjectsSection() {
                 
                 <div className="flex flex-wrap gap-2 mt-4">
                   {project.tags.map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-1 bg-muted rounded-full">
+                    <span key={tag} className="text-xs px-2 py-1 bg-blue/10 text-blue rounded-full">
                       {tag}
                     </span>
                   ))}
@@ -128,7 +163,7 @@ export function ProjectsSection() {
                 
                 <Button
                   variant="ghost"
-                  className="w-full mt-4 justify-start p-0 hover:bg-transparent hover:text-highlight"
+                  className="w-full mt-4 justify-start p-0 hover:bg-transparent hover:text-blue group"
                 >
                   <span>View details</span>
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -139,7 +174,12 @@ export function ProjectsSection() {
         </div>
         
         <div className="flex justify-center mt-12">
-          <Button variant="outline" size="lg" asChild>
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="button-glow hover:bg-blue/5 hover:text-blue border-blue/20 hover:border-blue/50"
+            asChild
+          >
             <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
               <Github className="mr-2 h-4 w-4" />
               View more on GitHub
@@ -151,9 +191,9 @@ export function ProjectsSection() {
       {/* Project Details Dialog */}
       {selectedProject && (
         <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-          <DialogContent className="sm:max-w-3xl">
+          <DialogContent className="sm:max-w-3xl backdrop-blur-xl bg-card/60 border-white/10">
             <DialogHeader>
-              <DialogTitle>{selectedProject.title}</DialogTitle>
+              <DialogTitle className="text-gradient">{selectedProject.title}</DialogTitle>
               <DialogDescription>
                 {selectedProject.description}
               </DialogDescription>
@@ -179,7 +219,7 @@ export function ProjectsSection() {
                   <ul className="mt-2 space-y-2">
                     {selectedProject.features.map((feature, index) => (
                       <li key={index} className="flex items-start">
-                        <Code className="h-5 w-5 text-highlight mr-2 mt-0.5 flex-shrink-0" />
+                        <Code className="h-5 w-5 text-blue mr-2 mt-0.5 flex-shrink-0" />
                         <span className="text-muted-foreground">{feature}</span>
                       </li>
                     ))}
@@ -192,7 +232,7 @@ export function ProjectsSection() {
                   <h4 className="text-lg font-semibold">Technologies Used</h4>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {selectedProject.technologies.map((tech) => (
-                      <span key={tech} className="px-3 py-1 bg-muted rounded-full text-sm">
+                      <span key={tech} className="px-3 py-1 bg-blue/10 text-blue rounded-full text-sm">
                         {tech}
                       </span>
                     ))}
@@ -202,7 +242,11 @@ export function ProjectsSection() {
               
               <div className="flex gap-4 mt-8">
                 {selectedProject.liveUrl && (
-                  <Button variant="accent" asChild>
+                  <Button 
+                    variant="accent" 
+                    className="bg-gradient-to-r from-blue to-purple button-glow hover:from-blue-dark hover:to-purple-dark"
+                    asChild
+                  >
                     <a
                       href={selectedProject.liveUrl}
                       target="_blank"
@@ -215,7 +259,11 @@ export function ProjectsSection() {
                 )}
                 
                 {selectedProject.githubUrl && (
-                  <Button variant="outline" asChild>
+                  <Button 
+                    variant="outline" 
+                    className="button-glow hover:bg-blue/5 hover:text-blue border-blue/20 hover:border-blue/50"
+                    asChild
+                  >
                     <a
                       href={selectedProject.githubUrl}
                       target="_blank"

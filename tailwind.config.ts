@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -62,8 +63,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				highlight: '#9b87f5',
-				highlightDark: '#7E69AB',
+				blue: {
+					DEFAULT: '#3B82F6',
+					light: '#60A5FA',
+					dark: '#2563EB'
+				},
+				purple: {
+					DEFAULT: '#A855F7',
+					light: '#C084FC',
+					dark: '#7E22CE'
+				},
+				highlight: '#3B82F6',
+				highlightDark: '#A855F7',
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
@@ -100,9 +111,21 @@ export default {
 					'0%': { transform: 'translateY(20px)', opacity: '0' },
 					'100%': { transform: 'translateY(0)', opacity: '1' }
 				},
+				'slide-in-right': {
+					'0%': { transform: 'translateX(20px)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
+				'slide-in-left': {
+					'0%': { transform: 'translateX(-20px)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
 				'spin-slow': {
 					'0%': { transform: 'rotate(0deg)' },
 					'100%': { transform: 'rotate(360deg)' }
+				},
+				'glow': {
+					'0%, 100%': { boxShadow: '0 0 5px 0px rgba(59, 130, 246, 0.5)' },
+					'50%': { boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.3)' }
 				}
 			},
 			animation: {
@@ -112,7 +135,10 @@ export default {
 				'fade-out': 'fade-out 0.5s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'slide-in': 'slide-in 0.5s ease-out',
-				'spin-slow': 'spin-slow 10s linear infinite'
+				'slide-in-right': 'slide-in-right 0.5s ease-out',
+				'slide-in-left': 'slide-in-left 0.5s ease-out',
+				'spin-slow': 'spin-slow 10s linear infinite',
+				'glow': 'glow 2s ease-in-out infinite'
 			}
 		}
 	},

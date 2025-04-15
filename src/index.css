@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,7 +51,7 @@
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 3.9%;
+    --card: 240 10% 5.9%;
     --card-foreground: 0 0% 98%;
 
     --popover: 240 10% 3.9%;
@@ -97,6 +98,13 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    background-image: radial-gradient(
+      circle at top right,
+      hsl(var(--background)) 0%,
+      hsl(var(--background)) 80%,
+      rgba(59, 130, 246, 0.05) 100%
+    );
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -110,7 +118,7 @@
 
 @layer components {
   .highlight-gradient {
-    @apply from-highlight to-highlightDark bg-gradient-to-r bg-clip-text text-transparent;
+    @apply from-blue to-purple bg-gradient-to-r bg-clip-text text-transparent;
   }
 
   .section {
@@ -123,7 +131,7 @@
 
   .section-title::after {
     content: "";
-    @apply absolute left-0 bottom-0 h-1 w-16 bg-highlight rounded-full -mb-4;
+    @apply absolute left-0 bottom-0 h-1 w-16 bg-blue rounded-full -mb-4;
   }
 
   .skill-bar {
@@ -131,20 +139,36 @@
   }
 
   .skill-progress {
-    @apply h-full bg-highlight rounded-full;
+    @apply h-full bg-blue rounded-full;
     transition: width 1.5s ease-in-out;
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-highlight to-highlightDark bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue to-purple bg-clip-text text-transparent;
   }
 
   .card {
-    @apply bg-card rounded-xl shadow-sm border border-muted/30 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-muted/50;
+    @apply bg-card rounded-xl shadow-sm border border-muted/30 overflow-hidden transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg hover:shadow-blue/10 hover:border-blue/30;
   }
 
   .link-underline {
-    @apply relative after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-highlight after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+    @apply relative after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-blue after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  .glassmorphism {
+    @apply bg-background/40 backdrop-blur-md border border-white/10 dark:border-white/5;
+  }
+
+  .button-glow {
+    @apply hover:shadow-md hover:shadow-blue/20 dark:hover:shadow-blue/30 transition-all duration-300;
+  }
+
+  .button-gradient {
+    @apply bg-gradient-to-r from-blue to-purple hover:from-blue-dark hover:to-purple-dark text-white transition-all duration-300;
   }
 }
 

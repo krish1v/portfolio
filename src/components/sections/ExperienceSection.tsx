@@ -66,7 +66,17 @@ export function ExperienceSection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in");
+            entry.target.classList.add("opacity-100");
+            entry.target.classList.remove("opacity-0");
+            
+            // Apply slide animation based on position
+            if (entry.target.classList.contains("timeline-left")) {
+              entry.target.classList.add("translate-x-0");
+              entry.target.classList.remove("-translate-x-10");
+            } else {
+              entry.target.classList.add("translate-x-0");
+              entry.target.classList.remove("translate-x-10");
+            }
           }
         });
       },
@@ -86,7 +96,7 @@ export function ExperienceSection() {
   }, []);
 
   return (
-    <section id="experience" className="py-24 bg-muted/20 dark:bg-muted/5">
+    <section id="experience" className="py-24 bg-gradient-to-b from-background to-background/70 dark:from-background dark:to-background/90">
       <div className="section">
         <h2 className="section-title">Experience</h2>
         <p className="text-muted-foreground max-w-2xl mt-4">
@@ -95,36 +105,38 @@ export function ExperienceSection() {
 
         <div className="mt-16 relative" ref={timelineRef}>
           {/* Timeline stem */}
-          <div className="absolute left-0 md:left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-highlight via-highlight to-muted transform md:-translate-x-1/2 z-0"></div>
+          <div className="absolute left-0 md:left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-blue via-blue/70 to-blue/20 transform md:-translate-x-1/2 z-0"></div>
 
           {/* Timeline items */}
           <div className="space-y-12 relative z-10">
             {experiences.map((item, index) => (
               <div
                 key={item.id}
-                className={`timeline-item opacity-0 flex flex-col md:flex-row gap-8 ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
-                }`}
+                className={`timeline-item transition-all duration-700 ${
+                  index % 2 === 0 
+                    ? "md:flex-row-reverse timeline-right opacity-0 translate-x-10" 
+                    : "timeline-left opacity-0 -translate-x-10"
+                } flex flex-col md:flex-row gap-8`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-highlight/20 border-2 border-highlight flex items-center justify-center z-10">
+                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-blue/20 border-2 border-blue flex items-center justify-center z-10">
                   {item.type === "work" ? (
-                    <Briefcase className="h-4 w-4 text-highlight" />
+                    <Briefcase className="h-4 w-4 text-blue" />
                   ) : (
-                    <GraduationCap className="h-4 w-4 text-highlight" />
+                    <GraduationCap className="h-4 w-4 text-blue" />
                   )}
                 </div>
 
                 {/* Content */}
                 <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-16" : "md:pl-16"}`}>
-                  <div className="card p-6 h-full">
+                  <div className="card p-6 h-full card-hover">
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="text-xl font-semibold">{item.title}</h3>
                         <p className="text-muted-foreground">{item.company}</p>
                       </div>
-                      <span className="bg-muted text-xs rounded-full px-3 py-1 flex items-center gap-1 whitespace-nowrap">
+                      <span className="bg-blue/10 text-blue text-xs rounded-full px-3 py-1 flex items-center gap-1 whitespace-nowrap">
                         <Calendar className="h-3 w-3" />
                         {item.period}
                       </span>
@@ -135,7 +147,7 @@ export function ExperienceSection() {
                     {item.skills && (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {item.skills.map((skill) => (
-                          <span key={skill} className="text-xs px-2 py-1 bg-muted rounded-full">
+                          <span key={skill} className="text-xs px-2 py-1 bg-blue/10 text-blue rounded-full">
                             {skill}
                           </span>
                         ))}
