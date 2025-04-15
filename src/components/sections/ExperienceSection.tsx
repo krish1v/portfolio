@@ -128,7 +128,7 @@ export function ExperienceSection() {
                 </div>
 
                 {/* Content */}
-                <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-16" : "md:pl-16"}`}>
+                <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-20" : "md:pl-20"}`}>
                   <div className="card p-6 h-full hover:shadow-lg hover:shadow-blue/10 backdrop-blur-sm bg-card/80 dark:bg-card/50 border-0">
                     <div className="flex items-start justify-between">
                       <div>
