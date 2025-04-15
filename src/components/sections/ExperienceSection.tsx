@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Calendar, Briefcase, GraduationCap } from "lucide-react";
 
 interface ExperienceItem {
@@ -14,6 +14,7 @@ interface ExperienceItem {
 
 export function ExperienceSection() {
   const timelineRef = useRef<HTMLDivElement>(null);
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
   const experiences: ExperienceItem[] = [
     {
@@ -66,21 +67,14 @@ export function ExperienceSection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("opacity-100");
-            entry.target.classList.remove("opacity-0");
-            
-            // Apply slide animation based on position
-            if (entry.target.classList.contains("timeline-left")) {
-              entry.target.classList.add("translate-x-0");
-              entry.target.classList.remove("-translate-x-10");
-            } else {
-              entry.target.classList.add("translate-x-0");
-              entry.target.classList.remove("translate-x-10");
+            const id = Number(entry.target.getAttribute('data-id'));
+            if (!visibleItems.includes(id)) {
+              setVisibleItems(prev => [...prev, id]);
             }
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
+      { threshold: 0.2, rootMargin: "0px 0px -100px 0px" }
     );
 
     const timelineItems = document.querySelectorAll(".timeline-item");
@@ -93,7 +87,7 @@ export function ExperienceSection() {
         observer.unobserve(item);
       });
     };
-  }, []);
+  }, [visibleItems]);
 
   return (
     <section id="experience" className="py-24 bg-gradient-to-b from-background to-background/70 dark:from-background dark:to-background/90">
@@ -112,15 +106,20 @@ export function ExperienceSection() {
             {experiences.map((item, index) => (
               <div
                 key={item.id}
+                data-id={item.id}
                 className={`timeline-item transition-all duration-700 ${
                   index % 2 === 0 
-                    ? "md:flex-row-reverse timeline-right opacity-0 translate-x-10" 
-                    : "timeline-left opacity-0 -translate-x-10"
-                } flex flex-col md:flex-row gap-8`}
-                style={{ transitionDelay: `${index * 150}ms` }}
+                    ? "md:flex-row-reverse timeline-right" 
+                    : "timeline-left"
+                } flex flex-col md:flex-row gap-8 opacity-0 translate-y-8`}
+                style={{ 
+                  opacity: visibleItems.includes(item.id) ? 1 : 0,
+                  transform: visibleItems.includes(item.id) ? 'translateY(0)' : 'translateY(2rem)',
+                  transitionDelay: `${(visibleItems.indexOf(item.id) * 150)}ms` 
+                }}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-blue/20 border-2 border-blue flex items-center justify-center z-10">
+                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-blue/20 to-purple/20 backdrop-blur-sm flex items-center justify-center z-10 shadow-md">
                   {item.type === "work" ? (
                     <Briefcase className="h-4 w-4 text-blue" />
                   ) : (
@@ -130,13 +129,13 @@ export function ExperienceSection() {
 
                 {/* Content */}
                 <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-16" : "md:pl-16"}`}>
-                  <div className="card p-6 h-full card-hover">
+                  <div className="card p-6 h-full hover:shadow-lg hover:shadow-blue/10 backdrop-blur-sm bg-card/80 dark:bg-card/50 border-0">
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="text-xl font-semibold">{item.title}</h3>
                         <p className="text-muted-foreground">{item.company}</p>
                       </div>
-                      <span className="bg-blue/10 text-blue text-xs rounded-full px-3 py-1 flex items-center gap-1 whitespace-nowrap">
+                      <span className="bg-gradient-to-r from-blue/10 to-purple/10 text-blue text-xs rounded-full px-3 py-1 flex items-center gap-1 whitespace-nowrap backdrop-blur-sm">
                         <Calendar className="h-3 w-3" />
                         {item.period}
                       </span>
@@ -147,7 +146,7 @@ export function ExperienceSection() {
                     {item.skills && (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {item.skills.map((skill) => (
-                          <span key={skill} className="text-xs px-2 py-1 bg-blue/10 text-blue rounded-full">
+                          <span key={skill} className="text-xs px-2 py-1 bg-blue/10 text-blue rounded-full backdrop-blur-sm">
                             {skill}
                           </span>
                         ))}
