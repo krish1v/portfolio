@@ -1,0 +1,71 @@
+
+import { Link } from "react-router-dom";
+import { Code, ArrowUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <footer className="bg-muted/30 dark:bg-muted/10 py-12">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="flex items-center gap-2 font-display font-semibold text-lg"
+            >
+              <Code className="text-highlight" />
+              <span>Portfolio</span>
+            </Link>
+            <span className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} All rights reserved
+            </span>
+          </div>
+
+          <div className="flex gap-8">
+            <a
+              href="#about"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
+            </a>
+            <a
+              href="#projects"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Projects
+            </a>
+            <a
+              href="#experience"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Experience
+            </a>
+            <a
+              href="#contact"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
+            </a>
+          </div>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={scrollToTop}
+            className="rounded-full"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </Button>
+        </div>
+      </div>
+    </footer>
+  );
+}
