@@ -72,7 +72,7 @@ export default {
 				},
 				blue: {
 					light: '#60A5FA',      // Light blue
-					DEFAULT: '#3B82F6',    // Default blue
+					DEFAULT: '#3B82F6',    // Default blue (This was missing before)
 					dark: '#2563EB'        // Dark blue
 				}
 			},
