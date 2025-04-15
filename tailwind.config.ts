@@ -72,7 +72,7 @@ export default {
 				},
 				blue: {
 					light: '#60A5FA',      // Light blue
-					DEFAULT: '#3B82F6',    // Default blue
+					DEFAULT: '#3B82F6',    // Default blue - this fixed entry is crucial
 					dark: '#2563EB',       // Dark blue
 					primary: '#3B82F6',    // Primary blue (used for specific cases)
 					foreground: '#FFFFFF'  // Foreground color for blue backgrounds
