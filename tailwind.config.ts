@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -62,8 +63,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				highlight: '#9b87f5',
-				highlightDark: '#7E69AB',
+				highlight: '#3B82F6',      // Changed to blue
+				highlightDark: '#2563EB',  // Changed to darker blue
+				purple: {
+					light: '#A855F7',      // Purple accent
+					DEFAULT: '#8B5CF6',    // Default purple
+					dark: '#7C3AED'        // Dark purple
+				},
+				blue: {
+					light: '#60A5FA',      // Light blue
+					DEFAULT: '#3B82F6',    // Default blue
+					dark: '#2563EB'        // Dark blue
+				}
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
@@ -100,9 +111,26 @@ export default {
 					'0%': { transform: 'translateY(20px)', opacity: '0' },
 					'100%': { transform: 'translateY(0)', opacity: '1' }
 				},
+				'slide-in-right': {
+					'0%': { transform: 'translateX(20px)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
+				'slide-in-left': {
+					'0%': { transform: 'translateX(-20px)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
 				'spin-slow': {
 					'0%': { transform: 'rotate(0deg)' },
 					'100%': { transform: 'rotate(360deg)' }
+				},
+				'card-hover': {
+					'0%': { transform: 'translateY(0) scale(1)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' },
+					'100%': { transform: 'translateY(-5px) scale(1.01)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }
+				},
+				'gradient-shift': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' }
 				}
 			},
 			animation: {
@@ -112,7 +140,16 @@ export default {
 				'fade-out': 'fade-out 0.5s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'slide-in': 'slide-in 0.5s ease-out',
-				'spin-slow': 'spin-slow 10s linear infinite'
+				'slide-in-right': 'slide-in-right 0.5s ease-out',
+				'slide-in-left': 'slide-in-left 0.5s ease-out',
+				'spin-slow': 'spin-slow 10s linear infinite',
+				'card-hover': 'card-hover 0.3s ease-out forwards',
+				'gradient-shift': 'gradient-shift 3s ease infinite'
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'blue-purple-gradient': 'linear-gradient(to right, #3B82F6, #8B5CF6)',
+				'purple-blue-gradient': 'linear-gradient(to right, #8B5CF6, #3B82F6)'
 			}
 		}
 	},

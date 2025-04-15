@@ -66,14 +66,19 @@ export function ExperienceSection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in");
+            if (entry.target.classList.contains('timeline-item-left')) {
+              entry.target.classList.add("animate-slide-in-right");
+            } else if (entry.target.classList.contains('timeline-item-right')) {
+              entry.target.classList.add("animate-slide-in-left");
+            }
+            entry.target.classList.add("opacity-100");
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -150px 0px" }
     );
 
-    const timelineItems = document.querySelectorAll(".timeline-item");
+    const timelineItems = document.querySelectorAll(".timeline-item-left, .timeline-item-right");
     timelineItems.forEach((item) => {
       observer.observe(item);
     });
@@ -86,7 +91,7 @@ export function ExperienceSection() {
   }, []);
 
   return (
-    <section id="experience" className="py-24 bg-muted/20 dark:bg-muted/5">
+    <section id="experience" className="py-24 bg-gradient-to-b from-background to-muted/5">
       <div className="section">
         <h2 className="section-title">Experience</h2>
         <p className="text-muted-foreground max-w-2xl mt-4">
@@ -95,30 +100,34 @@ export function ExperienceSection() {
 
         <div className="mt-16 relative" ref={timelineRef}>
           {/* Timeline stem */}
-          <div className="absolute left-0 md:left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-highlight via-highlight to-muted transform md:-translate-x-1/2 z-0"></div>
+          <div className="absolute left-0 md:left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-blue-DEFAULT via-purple-DEFAULT to-muted transform md:-translate-x-1/2 z-0"></div>
 
           {/* Timeline items */}
-          <div className="space-y-12 relative z-10">
+          <div className="space-y-16 relative z-10">
             {experiences.map((item, index) => (
               <div
                 key={item.id}
-                className={`timeline-item opacity-0 flex flex-col md:flex-row gap-8 ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
+                className={`opacity-0 transition-all duration-700 flex flex-col md:flex-row gap-8 ${
+                  index % 2 === 0 
+                    ? "md:flex-row-reverse timeline-item-left" 
+                    : "timeline-item-right"
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
-                {/* Timeline dot */}
-                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-highlight/20 border-2 border-highlight flex items-center justify-center z-10">
-                  {item.type === "work" ? (
-                    <Briefcase className="h-4 w-4 text-highlight" />
-                  ) : (
-                    <GraduationCap className="h-4 w-4 text-highlight" />
-                  )}
+                {/* Timeline dot with glow effect */}
+                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-blue-DEFAULT to-purple-DEFAULT p-1 flex items-center justify-center z-10 shadow-lg shadow-blue-DEFAULT/20">
+                  <div className="bg-background w-full h-full rounded-full flex items-center justify-center">
+                    {item.type === "work" ? (
+                      <Briefcase className="h-4 w-4 text-blue-DEFAULT" />
+                    ) : (
+                      <GraduationCap className="h-4 w-4 text-purple-DEFAULT" />
+                    )}
+                  </div>
                 </div>
 
                 {/* Content */}
                 <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-16" : "md:pl-16"}`}>
-                  <div className="card p-6 h-full">
+                  <div className="card p-6 h-full card-hover">
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="text-xl font-semibold">{item.title}</h3>
@@ -135,7 +144,7 @@ export function ExperienceSection() {
                     {item.skills && (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {item.skills.map((skill) => (
-                          <span key={skill} className="text-xs px-2 py-1 bg-muted rounded-full">
+                          <span key={skill} className="text-xs px-2 py-1 bg-blue-DEFAULT/10 text-blue-light dark:text-blue-light rounded-full border border-blue-DEFAULT/20">
                             {skill}
                           </span>
                         ))}
