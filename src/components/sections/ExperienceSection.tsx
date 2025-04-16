@@ -99,7 +99,7 @@ export function ExperienceSection() {
 
         <div className="mt-16 relative" ref={timelineRef}>
           {/* Timeline stem */}
-          <div className="absolute left-0 md:left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-blue via-blue/70 to-blue/20 transform md:-translate-x-1/2 z-0"></div>
+          <div className="absolute left-0 md:left-1/2 top-0 h-full w-px bg-gradient-to-b from-blue/50 via-blue/30 to-blue/10 transform md:-translate-x-1/2 z-0"></div>
 
           {/* Timeline items */}
           <div className="space-y-12 relative z-10">
@@ -119,34 +119,32 @@ export function ExperienceSection() {
                 }}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-blue/20 to-purple/20 backdrop-blur-sm flex items-center justify-center z-10 shadow-md">
-                  {item.type === "work" ? (
-                    <Briefcase className="h-4 w-4 text-blue" />
-                  ) : (
-                    <GraduationCap className="h-4 w-4 text-blue" />
-                  )}
+                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-blue to-purple backdrop-blur-sm flex items-center justify-center z-10 shadow-md">
+                  <div className="w-2 h-2 rounded-full bg-background"></div>
                 </div>
 
                 {/* Content */}
-                <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-20" : "md:pl-20"}`}>
-                  <div className="card p-6 h-full hover:shadow-lg hover:shadow-blue/10 backdrop-blur-sm bg-card/80 dark:bg-card/50 border-0">
-                    <div className="flex items-start justify-between">
+                <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-24" : "md:pl-24"}`}>
+                  <div className="backdrop-blur-sm bg-transparent dark:bg-transparent pb-8 border-0 transition-all duration-300 hover:translate-y-[-2px]">
+                    <div className="mb-3 flex items-start justify-between">
                       <div>
                         <h3 className="text-xl font-semibold">{item.title}</h3>
                         <p className="text-muted-foreground">{item.company}</p>
                       </div>
-                      <span className="bg-gradient-to-r from-blue/10 to-purple/10 text-blue text-xs rounded-full px-3 py-1 flex items-center gap-1 whitespace-nowrap backdrop-blur-sm">
+                      <span className="bg-gradient-to-r from-blue/5 to-purple/5 text-blue text-xs rounded-full px-3 py-1.5 flex items-center gap-1 whitespace-nowrap backdrop-blur-sm shadow-sm">
                         <Calendar className="h-3 w-3" />
                         {item.period}
                       </span>
                     </div>
 
-                    <p className="mt-4 text-muted-foreground">{item.description}</p>
+                    <div className="h-px w-full bg-gradient-to-r from-blue/20 to-purple/20 my-3 opacity-70"></div>
+
+                    <p className="mt-3 text-muted-foreground">{item.description}</p>
 
                     {item.skills && (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {item.skills.map((skill) => (
-                          <span key={skill} className="text-xs px-2 py-1 bg-blue/10 text-blue rounded-full backdrop-blur-sm">
+                          <span key={skill} className="text-xs px-2.5 py-1 bg-gradient-to-r from-blue/10 to-purple/10 text-blue rounded-full backdrop-blur-sm">
                             {skill}
                           </span>
                         ))}

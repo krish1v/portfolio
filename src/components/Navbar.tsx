@@ -39,7 +39,7 @@ export function Navbar() {
           className="flex items-center gap-2 font-display font-semibold text-lg group"
         >
           <Code className="text-blue transition-colors group-hover:text-purple duration-300" />
-          <span className="group-hover:text-gradient transition-all duration-300">Portfolio</span>
+          <span className="group-hover:text-gradient transition-all duration-300">Krishiv Khatri</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -60,8 +60,7 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <Button 
-              variant="accent" 
-              className="bg-gradient-to-r from-blue to-purple hover:from-blue-dark hover:to-purple-dark button-glow"
+              className="bg-gradient-to-r from-blue/90 to-purple/90 hover:from-blue hover:to-purple text-white border-0 transition-all duration-300 hover:shadow-md hover:shadow-blue/20 px-5 rounded-full hover:scale-[1.02]"
               asChild
             >
               <a href="#contact">Get in touch</a>
@@ -102,8 +101,7 @@ export function Navbar() {
               ))}
               <li>
                 <Button 
-                  variant="accent" 
-                  className="w-full mt-2 bg-gradient-to-r from-blue to-purple hover:from-blue-dark hover:to-purple-dark button-glow"
+                  className="w-full mt-2 bg-gradient-to-r from-blue/90 to-purple/90 hover:from-blue hover:to-purple text-white border-0 transition-all duration-300 hover:shadow-md hover:shadow-blue/20 rounded-full"
                   asChild
                 >
                   <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
