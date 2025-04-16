@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Code, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -16,15 +15,8 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
-            <Link
-              to="/"
-              className="flex items-center gap-2 font-display font-semibold text-lg"
-            >
-              <Code className="text-highlight" />
-              <span>Portfolio</span>
-            </Link>
             <span className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} All rights reserved
+              Krishiv Khatri © {new Date().getFullYear()} All rights reserved
             </span>
           </div>
 

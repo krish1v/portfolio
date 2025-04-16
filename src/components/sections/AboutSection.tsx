@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -50,8 +49,9 @@ export function AboutSection() {
   }, [techSkills]);
 
   return (
-    <section id="about" className="bg-muted/30 dark:bg-muted/10 py-24">
-      <div className="section">
+    <section id="about" className="relative py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-blue/5 to-background pointer-events-none" />
+      <div className="section relative">
         <h2 className="section-title">About Me</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mt-16">
@@ -59,13 +59,13 @@ export function AboutSection() {
             <h3 className="text-2xl font-semibold mb-4">Who am I?</h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                I'm a Computer Science student and software developer with a passion for building products that solve real problems. My journey in tech started when I built my first website at 15, and I've been hooked ever since.
+                I'm a Computer Engineering student at Georgia Tech who's excited about using code to solve real problems. I started building websites and experimenting with tech when I was 16 and quickly found myself drawn to the challenge of turning ideas into things that work — and make sense to people.
               </p>
               <p>
-                Currently, I'm focusing on AI applications and web development, with a particular interest in creating accessible and performant user experiences. I'm also exploring the intersection of technology and education.
+                Right now, I'm especially focused on AI applications, systems, and web development. I care a lot about performance, accessibility, and building experiences that feel thoughtful, not just functional. I’ve worked on real-world projects ranging from automating my dorm to building study tools and working to fintech and blockchain-based startups. I'm always looking for opportunities where I can grow, contribute meaningfully, and build with purpose.
               </p>
               <p>
-                When I'm not coding, you can find me hiking in the mountains, reading science fiction, or experimenting with new recipes in the kitchen.
+                Outside of work, I’m usually playing the guitar, testing out new recipes, or going on a new hiking trail with friends and family.
               </p>
             </div>
             

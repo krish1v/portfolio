@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -106,8 +105,10 @@ export function ProjectsSection() {
   }, []);
 
   return (
-    <section id="projects" className="py-24">
-      <div className="section" ref={projectsRef}>
+    <section id="projects" className="relative py-32">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-purple/5 to-background" />
+      <div className="section relative" ref={projectsRef}>
         <h2 className="section-title">Projects</h2>
         <p className="text-muted-foreground max-w-2xl mt-4">
           Here are some of the projects I've worked on. Each one taught me something new and helped me grow as a developer.

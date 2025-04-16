@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MessageSquare, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, MessageSquare, Send, Github, Linkedin, Twitter, Instagram } from "lucide-react";
 
 export function ContactSection() {
   const [formState, setFormState] = useState({
@@ -39,8 +38,11 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24">
-      <div className="section">
+    <section id="contact" className="relative py-32">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-purple/5 to-background">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,rgba(124,58,237,0.05),transparent_50%)]" />
+      </div>
+      <div className="section relative">
         <h2 className="section-title">Get In Touch</h2>
         <p className="text-muted-foreground max-w-2xl mt-4">
           Have a project in mind or just want to chat? Feel free to reach out!
@@ -72,7 +74,7 @@ export function ContactSection() {
                       name="name"
                       value={formState.name}
                       onChange={handleChange}
-                      placeholder="Your name"
+                      placeholder="your name"
                       required
                     />
                   </div>
@@ -101,7 +103,7 @@ export function ContactSection() {
                       name="message"
                       value={formState.message}
                       onChange={handleChange}
-                      placeholder="How can I help you?"
+                      placeholder="whats on your mind?"
                       rows={5}
                       required
                     />
@@ -148,7 +150,7 @@ export function ContactSection() {
 
             <div>
               <h3 className="text-xl font-semibold mb-4">Social Links</h3>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <a
                   href="https://github.com/yourusername"
                   target="_blank"
@@ -183,6 +185,18 @@ export function ContactSection() {
                     <Twitter className="h-5 w-5 text-highlight" />
                   </div>
                   <span>Twitter</span>
+                </a>
+
+                <a
+                  href="https://instagram.com/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
+                    <Instagram className="h-5 w-5 text-highlight" />
+                  </div>
+                  <span>Instagram</span>
                 </a>
               </div>
             </div>

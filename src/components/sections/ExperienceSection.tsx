@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Calendar, Briefcase, GraduationCap } from "lucide-react";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
@@ -29,20 +28,20 @@ export function ExperienceSection() {
     },
     {
       id: 2,
-      title: "Bachelor of Science in Computer Science",
-      company: "University of Technology",
-      period: "Sep 2020 - Present",
-      description: "Focusing on artificial intelligence and web technologies. Maintaining a 3.8 GPA while participating in hackathons and coding competitions.",
+      title: "Bachelor of Science in Computer Engineering",
+      company: "Georgia Institute of Technology",
+      period: "Aug 2024 - Present",
+      description: "Concentration in Distributed Systems and Software Design and Information Internetworks with a minor in Business. Maintaining a 4.0 GPA while building startups, participating in hackathons, and being a part of clubs like Startup Exchange, Venture Capital Club, and Trading@GT.",
       type: "education"
     },
     {
       id: 3,
-      title: "Frontend Developer",
-      company: "StartupHub",
-      period: "Oct 2022 - Mar 2023",
-      description: "Worked with a team of developers to build an early-stage startup's web application. Implemented authentication flows, dashboard interfaces, and data visualization components.",
+      title: "Product Development Intern",
+      company: "FundFluent Limited.",
+      period: "Jun 2023 - Aug 2023",
+      description: "Worked across AI, data, and strategy at a VC-backed startup helping SMEs raise $20M+. Developed an SEO pipeline with LLMs, analyzed product usage to guide v2 launch, and pitched the roadmap to win HKU’s Most Outstanding Student Prize.",
       type: "work",
-      skills: ["JavaScript", "React", "TailwindCSS", "Firebase"]
+      skills: ["Python", "SQL", "Data Analysis", "Strategy"]
     },
     {
       id: 4,
@@ -56,9 +55,9 @@ export function ExperienceSection() {
     {
       id: 5,
       title: "High School Diploma",
-      company: "Westlake High School",
-      period: "Sep 2016 - Jun 2020",
-      description: "Graduated with honors. Participated in robotics club and math competitions.",
+      company: "West Island School",
+      period: "Aug 2017 - May 2024",
+      description: "Graduated with International Baccalaureate Diploma (Score: 44), ACT: 35. Head Student · Founder, Young Entrepreneurs Club · Debate · Physics & Econ Olympiads · Volleyball · Service & Leadership (Kids4Kids, Borneo, Diwali Ball)",
       type: "education"
     }
   ];
@@ -91,15 +90,18 @@ export function ExperienceSection() {
   }, [visibleItems]);
 
   return (
-    <section id="experience" className="py-24 bg-gradient-to-b from-background to-background/70 dark:from-background dark:to-background/90">
-      <div className="section">
+    <section id="experience" className="relative py-32">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.05),transparent_50%)]" />
+      </div>
+      <div className="section relative">
         <h2 className="section-title">Experience</h2>
         <p className="text-muted-foreground max-w-2xl mt-4">
           My professional journey and educational background in the world of technology.
         </p>
 
-        <div className="mt-16 relative" ref={timelineRef}>
-          {/* Timeline stem - made thinner */}
+        <div className="mt-16 relative max-w-[1400px] mx-auto" ref={timelineRef}>
+          {/* Timeline stem - centered and adjusted for wider layout */}
           <div className="absolute left-0 md:left-1/2 top-0 h-full w-[2px] bg-gradient-to-b from-blue/40 via-blue/30 to-blue/10 transform md:-translate-x-1/2 z-0"></div>
 
           {/* Timeline items */}
@@ -112,28 +114,28 @@ export function ExperienceSection() {
                   index % 2 === 0 
                     ? "md:flex-row-reverse timeline-right" 
                     : "timeline-left"
-                } flex flex-col md:flex-row gap-10 opacity-0 translate-y-8`}
+                } flex flex-col md:flex-row gap-8 opacity-0 translate-y-8`}
                 style={{ 
                   opacity: visibleItems.includes(item.id) ? 1 : 0,
                   transform: visibleItems.includes(item.id) ? 'translateY(0)' : 'translateY(2rem)',
                   transitionDelay: `${(visibleItems.indexOf(item.id) * 150)}ms` 
                 }}
               >
-                {/* Timeline dot - smaller and more subtle */}
+                {/* Timeline dot */}
                 <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-blue to-purple backdrop-blur-sm flex items-center justify-center z-10 shadow-md">
                   <div className="w-1.5 h-1.5 rounded-full bg-background"></div>
                 </div>
 
-                {/* Content - increased margin from timeline */}
-                <div className={`md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-32" : "md:pl-32"}`}>
+                {/* Content - wider cards */}
+                <div className="w-full md:w-[calc(50%-2rem)] min-w-[500px]">
                   <HoverCard openDelay={100} closeDelay={100}>
                     <HoverCardTrigger asChild>
                       <div className="backdrop-blur-sm bg-transparent dark:bg-transparent pb-8 border-0 rounded-xl transition-all duration-300 
-                          hover:translate-y-[-4px] group relative overflow-hidden
+                          hover:translate-y-[-4px] group relative overflow-hidden w-full
                           before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-blue/5 before:to-purple/5 
                           hover:before:from-blue/10 hover:before:to-purple/10 before:transition-all before:duration-500
                           hover:shadow-lg hover:shadow-blue/5 dark:hover:shadow-blue/10">
-                        <div className="relative z-10 p-5">
+                        <div className="relative z-10 p-6 md:p-8">
                           <div className="mb-3 flex items-start justify-between">
                             <div>
                               <h3 className="text-xl font-semibold group-hover:text-blue transition-colors duration-300">{item.title}</h3>

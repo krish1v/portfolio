@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -77,9 +76,30 @@ export default {
 				highlightDark: '#A855F7',
 			},
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-				mono: ['Fira Code', 'monospace'],
-				display: ['Poppins', 'sans-serif']
+				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				display: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+				mono: ['JetBrains Mono', 'monospace']
+			},
+			fontSize: {
+				'2xs': ['0.75rem', { lineHeight: '1.25rem' }],  // 12px
+				'xs': ['0.813rem', { lineHeight: '1.375rem' }], // 13px
+				'sm': ['0.875rem', { lineHeight: '1.5rem' }],   // 14px
+				'base': ['1rem', { lineHeight: '1.75rem' }],    // 16px
+				'lg': ['1.125rem', { lineHeight: '1.75rem' }],  // 18px
+				'xl': ['1.25rem', { lineHeight: '1.875rem' }],  // 20px
+				'2xl': ['1.5rem', { lineHeight: '2rem' }],      // 24px
+				'3xl': ['1.875rem', { lineHeight: '2.25rem' }], // 30px
+				'4xl': ['2.25rem', { lineHeight: '2.75rem' }],  // 36px
+				'5xl': ['3rem', { lineHeight: '3.5rem' }],      // 48px
+				'6xl': ['3.75rem', { lineHeight: '4.25rem' }],  // 60px
+			},
+			fontWeight: {
+				light: '300',
+				normal: '400',
+				medium: '500',
+				semibold: '600',
+				bold: '700',
+				extrabold: '800',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
