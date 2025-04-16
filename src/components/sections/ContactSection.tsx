@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageSquare, Send, Github, Linkedin, Twitter, Instagram } from "lucide-react";
+import emailjs from '@emailjs/browser';
+import { useToast } from "@/components/ui/use-toast";
 
 export function ContactSection() {
+  const { toast } = useToast();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -20,21 +23,45 @@ export function ContactSection() {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      await emailjs.send(
+        'service_6h8teqc', // Service ID
+        'template_yj26vsr', // Template ID
+        {
+          from_name: formState.name,
+          from_email: formState.email,
+          message: formState.message,
+          to_email: 'krishivkhatri2409@gmail.com',
+        },
+        '0ZVvpJIoY9GMc830y' // Public Key
+      );
+
       setIsSubmitted(true);
       setFormState({ name: "", email: "", message: "" });
-      
+      toast({
+        title: "Message sent!",
+        description: "Thanks for reaching out. I'll get back to you soon!",
+        duration: 5000,
+      });
+
       // Reset success message after 5 seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      toast({
+        title: "Error sending message",
+        description: "Please try again or contact me directly via email.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -76,6 +103,8 @@ export function ContactSection() {
                       onChange={handleChange}
                       placeholder="your name"
                       required
+                      minLength={2}
+                      className="w-full"
                     />
                   </div>
 
@@ -91,6 +120,8 @@ export function ContactSection() {
                       onChange={handleChange}
                       placeholder="your.email@example.com"
                       required
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                      className="w-full"
                     />
                   </div>
 
@@ -103,9 +134,11 @@ export function ContactSection() {
                       name="message"
                       value={formState.message}
                       onChange={handleChange}
-                      placeholder="whats on your mind?"
+                      placeholder="What's on your mind?"
                       rows={5}
                       required
+                      minLength={10}
+                      className="w-full"
                     />
                   </div>
 
@@ -137,13 +170,13 @@ export function ContactSection() {
               <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
               <div className="space-y-4">
                 <a
-                  href="mailto:hello@example.com"
+                  href="mailto:krishivkhatri@gatech.edu"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
                     <Mail className="h-5 w-5 text-highlight" />
                   </div>
-                  <span>hello@example.com</span>
+                  <span>krishivkhatri@gatech.edu</span>
                 </a>
               </div>
             </div>
