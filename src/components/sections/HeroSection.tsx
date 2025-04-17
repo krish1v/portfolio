@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileText, Download, Github, Instagram, Linkedin } from "lucide-react";
+import { ArrowRight, FileText, Download, Github, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { BackgroundGradient } from "@/components/ui/BackgroundGradient";
 import { useRef, useEffect, useState } from "react";
@@ -240,7 +240,7 @@ export function HeroSection() {
                 custom={4}
               >
                 <motion.a
-                  href="https://github.com/yourusername"
+                  href="https://github.com/Krishiv2409"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-blue transition-colors duration-300"
@@ -251,7 +251,7 @@ export function HeroSection() {
                   <Github className="h-5 w-5" />
                 </motion.a>
                 <motion.a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://linkedin.com/in/krishiv-khatri"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-blue transition-colors duration-300"
@@ -262,7 +262,18 @@ export function HeroSection() {
                   <Linkedin className="h-5 w-5" />
                 </motion.a>
                 <motion.a
-                  href="https://instagram.com/yourusername"
+                  href="https://twitter.com/krishivkhatri"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-blue transition-colors duration-300"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label="Twitter"
+                >
+                  <Twitter className="h-5 w-5" />
+                </motion.a>
+                <motion.a
+                  href="https://instagram.com/_krishiv__"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-blue transition-colors duration-300"

@@ -185,7 +185,7 @@ export function ContactSection() {
               <h3 className="text-xl font-semibold mb-4">Social Links</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <a
-                  href="https://github.com/yourusername"
+                  href="https://github.com/Krishiv2409" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
@@ -197,7 +197,7 @@ export function ContactSection() {
                 </a>
                 
                 <a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://linkedin.com/in/krishiv-khatri"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
@@ -209,7 +209,7 @@ export function ContactSection() {
                 </a>
                 
                 <a
-                  href="https://twitter.com/yourusername"
+                  href="https://x.com/krishivkhatri"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
@@ -221,7 +221,7 @@ export function ContactSection() {
                 </a>
 
                 <a
-                  href="https://instagram.com/yourusername"
+                  href="https://instagram.com/_krishiv__"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"

@@ -20,7 +20,7 @@ export function ExperienceSection() {
     {
       id: 1,
       title: "Software Engineering Intern",
-      company: "Tech Innovations Inc.",
+      company: "Global Futures and Options Ltd (GFO-X)",
       period: "Jun 2023 - Aug 2023",
       description: "Developed new features for the company's flagship product, improving user engagement by 15%. Collaborated with designers and product managers to implement responsive UI components.",
       type: "work",
@@ -46,11 +46,11 @@ export function ExperienceSection() {
     {
       id: 4,
       title: "Research Assistant",
-      company: "AI Lab, University of Technology",
-      period: "Jan 2022 - May 2022",
-      description: "Assisted in developing machine learning models for natural language processing tasks. Collected and preprocessed data, trained models, and evaluated results.",
+      company: "The Hong Kong Polytechnic University",
+      period: "Apr 2023 - Aug 2023",
+      description: "Conducted research on proton-exchange membrane fuel cells (PEMFC) as part of a competitive PolyU reseach program. Built and tested a model car powered by a passive fuel cell stack to evaluate performance and sustainability impact.",
       type: "work",
-      skills: ["Python", "PyTorch", "NLP", "Data Analysis"]
+      skills: ["Engineering Research", "Fuel Cell", "Modeling", "Prototype Testing"]
     },
     {
       id: 5,
