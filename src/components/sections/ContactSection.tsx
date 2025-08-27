@@ -127,7 +127,7 @@ export function ContactSection() {
                       href="tel:+17709915129"
                       className="block text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      +1 (770) 991-5129
+                      +1 (470) 313-5969
                     </a>
                   </div>
                 </div>

@@ -70,7 +70,7 @@ export function HeroSection() {
     <section 
       ref={containerRef}
       id="home" 
-      className="relative min-h-screen bg-white overflow-hidden flex items-center py-20 md:translate-x-4 lg:translate-x-8"
+      className="relative min-h-screen bg-white overflow-hidden flex items-center py-20"
     >
       {/* Minimal background element */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
