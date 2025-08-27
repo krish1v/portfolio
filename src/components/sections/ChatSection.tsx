@@ -115,6 +115,7 @@ export function ChatSection() {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
+      setIsLoading(false);
     } finally {
       // isLoading is cleared on first delta or on fallback/error; no-op here to avoid flicker
       // Refocus input after sending message
