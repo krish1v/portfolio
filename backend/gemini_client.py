@@ -36,7 +36,8 @@ def generate_answer(prompt: str, stream: bool = False, model_name: Optional[str]
         "temperature": float(os.getenv("GEMINI_TEMPERATURE", "0.2")),
         "top_p": float(os.getenv("GEMINI_TOP_P", "0.9")),
         "top_k": int(os.getenv("GEMINI_TOP_K", "40")),
-        "max_output_tokens": int(os.getenv("GEMINI_MAX_TOKENS", "512")),
+        # Raise default to reduce mid-sentence cutoffs; can still be overridden via env
+        "max_output_tokens": int(os.getenv("GEMINI_MAX_TOKENS", "1024")),
     }
     model = genai.GenerativeModel(model_name=chosen_model, generation_config=generation_config)
 

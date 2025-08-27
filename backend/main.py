@@ -24,9 +24,9 @@ class ChatRequest(BaseModel):
 def build_prompt(query: str, context_items: List[Dict[str, Any]]) -> str:
     instructions = (
         "You are Krishiv’s personal AI agent. Your role is to represent him and answer questions about his background, projects, skills, experiences, interests, motivations, and values. "
-        "Always use the provided context to ground your answers, but you may rephrase and elaborate for clarity and completeness. Feel free to use the context to answer questions about might be relevant to Krishiv and only make inferences if the user asks about something not covered in the context."
+        "Always use the provided context to ground your answers, but you may rephrase and elaborate for clarity and completeness. "
         "If a user asks about something not covered in the context, do not just say 'I don’t know.' Instead, respond by explaining that you don’t have that information and suggest a more relevant question they could ask about Krishiv. "
-        "Maintain a professional yet approachable tone, as if speaking on Krishiv’s behalf in a conversation with a recruiter or collaborator."
+        "Maintain a professional yet approachable tone, as if speaking on Krishiv’s behalf in a conversation with a recruiter or collaborator. "
         "Never invent facts beyond the given context."
     )
     # Render context in a structured block to help grounding
@@ -42,9 +42,8 @@ def build_prompt(query: str, context_items: List[Dict[str, Any]]) -> str:
         context_block = "(no relevant context found)"
 
     task = (
-        "Task: Answer the user's question concisely based on the context. "
-        "If the user asks about skills, focus on technical and programming skills unless they specifically ask about other types of skills."
-        "If the user asks about experience, always start with the most recent experience."
+        "Task: Answer the user's question concisely (1-3 sentences). "
+        "If the user asks to summarize skills, compile the 'skill' items."
     )
 
     prompt = (
@@ -57,14 +56,32 @@ def build_prompt(query: str, context_items: List[Dict[str, Any]]) -> str:
     return prompt
 
 
-def build_fallback_answer(query: str, context_items: List[Dict[str, Any]]) -> str:
-    """Synthesize a minimal answer if the model returns empty.
+def is_cut_off(text: str) -> bool:
+    if not text:
+        return False
+    trimmed = text.strip()
+    # Heuristic: missing final punctuation and ends with a short unfinished token
+    if len(trimmed) < 40:
+        return False
+    return not trimmed.endswith((".", "!", "?"))
 
-    - If the query mentions skills, compile 'skill' items.
-    - Otherwise, return the first context item's content or a generic message.
-    """
-    q = (query or "").lower()
-    return "I don't have enough information in the knowledge base to answer that yet."
+
+def request_continuation(original_answer: str) -> str:
+    try:
+        continuation_prompt = (
+            "Continue the previous answer naturally if it was cut off. "
+            "Do not repeat content. Provide at most one additional sentence that completes the thought.\n\n"
+            f"Previous partial answer: {original_answer}\n\nContinuation:"
+        )
+        extra = generate_answer(continuation_prompt, stream=False)
+        if isinstance(extra, str) and extra.strip():
+            # Avoid duplicating if model repeats the sentence
+            if original_answer.strip().endswith(extra.strip()):
+                return original_answer
+            return (original_answer + " " + extra).strip()
+    except Exception:
+        pass
+    return original_answer
 
 
 app = FastAPI(title="Krishiv Personal AI Backend", version="0.1.0")
@@ -94,15 +111,7 @@ def health() -> Dict[str, str]:
 def chat(req: ChatRequest):
     try:
         try:
-            # Increase retrieval count and add query enhancement for skills
-            query = req.query
-            if any(word in query.lower() for word in ["skill", "skills", "tech", "stack", "technical"]):
-                # Enhance query to better match technical skills
-                query = f"technical skills programming development {query}"
-            elif any(word in query.lower() for word in ["language", "languages", "mandarin", "english"]):
-                # Enhance query to better match language skills
-                query = f"language communication {query}"
-            retrieved = query_top_k(query, k=10)
+            retrieved = query_top_k(req.query, k=10)
         except Exception as e:
             logger.exception("retrieval_failed: %s", e)
             retrieved = []
@@ -126,8 +135,18 @@ def chat(req: ChatRequest):
         except Exception as e:
             logger.exception("llm_failed: %s", e)
             text = ""
+        # If the model returned nothing, retry once with a minimal prompt (no KB fallback message)
         if not isinstance(text, str) or not text.strip():
-            text = build_fallback_answer(req.query, retrieved)
+            try:
+                retry_prompt = (
+                    "Answer the user's question concisely (1-3 sentences).\n\n"
+                    f"Question: {req.query}\n\nAnswer:"
+                )
+                text = generate_answer(retry_prompt, stream=False)
+            except Exception:
+                text = ""
+        elif is_cut_off(text):
+            text = request_continuation(text)
         return JSONResponse({
             "answer": text,
             "context": retrieved,
@@ -137,9 +156,7 @@ def chat(req: ChatRequest):
         raise
     except Exception as e:
         logger.exception("chat_unhandled_error: %s", e)
-        # Return graceful fallback instead of 500 when possible
-        text = build_fallback_answer(req.query, [])
-        return JSONResponse({"answer": text, "context": []}, status_code=200)
+        return JSONResponse({"answer": "", "context": []}, status_code=200)
 
 
 # For local runs: `python -m uvicorn backend.main:app --reload`
