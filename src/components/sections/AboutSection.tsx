@@ -40,7 +40,7 @@ export function AboutSection() {
   return (
     <section id="about" className="relative py-20 md:py-24 overflow-hidden border-t border-border/20">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-blue/5 to-background pointer-events-none" />
-      <div className="section relative">
+      <div className="section relative md:scale-[0.94] md:origin-top">
         <h2 className="section-title">About Me</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">

@@ -67,7 +67,7 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="relative py-20 md:py-24 border-t border-border/20">
-      <div className="section relative">
+      <div className="section relative md:scale-[0.94] md:origin-top">
         <h2 className="section-title">Get In Touch</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">

@@ -143,7 +143,7 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" className="relative py-20 md:py-24 overflow-hidden bg-white border-t border-border/20">
-      <div className="max-w-5xl mx-auto px-6 sm:px-8">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 md:scale-[0.94] md:origin-top">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
