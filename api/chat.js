@@ -1,10 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-let bundledKnowledge = [];
-try {
-  bundledKnowledge = require('../knowledge.json');
-} catch {}
+export const config = {};
 
 async function parseJsonBody(req) {
   if (req.body && typeof req.body === 'object') return req.body;
@@ -12,17 +6,12 @@ async function parseJsonBody(req) {
     let data = '';
     req.on('data', (chunk) => (data += chunk));
     req.on('end', () => {
-      try {
-        resolve(JSON.parse(data || '{}'));
-      } catch {
-        resolve({});
-      }
+      try { resolve(JSON.parse(data || '{}')); } catch { resolve({}); }
     });
   });
 }
 
-module.exports = async (req, res) => {
-  // CORS headers (safe even on same-origin)
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -44,43 +33,23 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const { default: knowledge } = await import('../knowledge.json', { assert: { type: 'json' } }).catch(async () => ({ default: [] }));
     const body = await parseJsonBody(req);
-    const query = String(body.query || '');
+    const query = String(body.query || '').toLowerCase();
 
-    let knowledge = Array.isArray(bundledKnowledge) ? bundledKnowledge : [];
-
-    if (!knowledge.length) {
-      // Resolve knowledge.json from repo root (fallback)
-      const root = path.dirname(path.dirname(__dirname));
-      const candidates = [
-        path.join(root, 'knowledge.json'),
-        path.join(__dirname, 'knowledge.json'),
-      ];
-      for (const p of candidates) {
-        try {
-          if (fs.existsSync(p)) {
-            const raw = fs.readFileSync(p, 'utf-8');
-            knowledge = JSON.parse(raw);
-            break;
-          }
-        } catch {}
-      }
-    }
-
-    const q = query.toLowerCase();
-    const pick = (type) => knowledge.filter((it) => it && it.type === type).map((it) => it.content);
+    const pick = (type) => (Array.isArray(knowledge) ? knowledge : []).filter((it) => it && it.type === type).map((it) => it.content);
 
     let answer = '';
-    if (["skill","skills","tech","stack","technical"].some((w) => q.includes(w))) {
+    if (["skill","skills","tech","stack","technical"].some((w) => query.includes(w))) {
       const list = pick('skill');
       if (list.length) answer = 'Skills: ' + list.join(', ');
-    } else if (["project","projects","build","create"].some((w) => q.includes(w))) {
+    } else if (["project","projects","build","create"].some((w) => query.includes(w))) {
       const list = pick('project');
       if (list.length) answer = 'Projects: ' + list.slice(0, 3).join('. ');
-    } else if (["experience","work","job","intern"].some((w) => q.includes(w))) {
+    } else if (["experience","work","job","intern"].some((w) => query.includes(w))) {
       const list = pick('experience');
       if (list.length) answer = 'Experience: ' + list.slice(0, 3).join('. ');
-    } else if (["language","languages","mandarin","english"].some((w) => q.includes(w))) {
+    } else if (["language","languages","mandarin","english"].some((w) => query.includes(w))) {
       const list = pick('language');
       if (list.length) answer = 'Languages: ' + list.join(', ');
     }
@@ -96,8 +65,6 @@ module.exports = async (req, res) => {
     return res.end(JSON.stringify({ answer, context: [], model: 'edge-simple' }));
   } catch (e) {
     res.setHeader('Content-Type', 'application/json');
-    return res.end(
-      JSON.stringify({ answer: "I'm having trouble responding right now. Please try again.", context: [] })
-    );
+    return res.end(JSON.stringify({ answer: "I'm having trouble responding right now. Please try again.", context: [] }));
   }
-};
+}
