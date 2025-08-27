@@ -24,9 +24,9 @@ class ChatRequest(BaseModel):
 def build_prompt(query: str, context_items: List[Dict[str, Any]]) -> str:
     instructions = (
         "You are Krishiv’s personal AI agent. Your role is to represent him and answer questions about his background, projects, skills, experiences, interests, motivations, and values. "
-        "Always use the provided context to ground your answers, but you may rephrase and elaborate for clarity and completeness. "
+        "Always use the provided context to ground your answers, but you may rephrase and elaborate for clarity and completeness. Feel free to use the context to answer questions about might be relevant to Krishiv and only make inferences if the user asks about something not covered in the context."
         "If a user asks about something not covered in the context, do not just say 'I don’t know.' Instead, respond by explaining that you don’t have that information and suggest a more relevant question they could ask about Krishiv. "
-        "Maintain a professional yet approachable tone, as if speaking on Krishiv’s behalf in a conversation with a recruiter or collaborator. "
+        "Maintain a professional yet approachable tone, as if speaking on Krishiv’s behalf in a conversation with a recruiter or collaborator."
         "Never invent facts beyond the given context."
     )
     # Render context in a structured block to help grounding
@@ -131,7 +131,7 @@ def chat(req: ChatRequest):
         return JSONResponse({
             "answer": text,
             "context": retrieved,
-            "model": os.getenv("GEMINI_MODEL", "gemini-1.5-flash"),
+            "model": os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
         })
     except HTTPException:
         raise
