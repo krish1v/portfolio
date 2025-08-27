@@ -1,0 +1,33 @@
+# Python virtual environments
+.venv/
+.venv39/
+__pycache__/
+*.pyc
+
+# Node modules (will be installed by Vercel)
+node_modules/
+
+# Development files
+.git/
+.gitignore
+README.md
+*.log
+
+# Backend files (not needed for simplified API)
+backend/
+requirements.txt
+
+# Development configs
+.env
+.env.local
+.env.development
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

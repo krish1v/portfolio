@@ -10,7 +10,7 @@
   { "id": "exp-gfox-5", "type": "experience", "content": "Built a Confluence scraper and classifier to populate 1,000+ docs into PostgreSQL for fast semantic search across engineering and ops." },
   { "id": "exp-gfox-6", "type": "experience", "content": "Collaborated across infra, development, market ops, quant, and compliance—demonstrating applied AI inside a regulated finance context." },
 
-  { "id": "proj-slidein-1", "type": "project", "content": "SlideIn — AI cold-outreach platform: won 1st place at Georgia Tech Shipathon; launch reached 500k+ impressions across social platforms." },
+  { "id": "proj-slidein-1", "type": "project", "content": "SlideIn — AI cold-outreach platform: won 1st place at Georgia Tech Shipathon; launch reached 500k+ impressions across social platforms; 1000+ users." },
   { "id": "proj-slidein-2", "type": "project", "content": "SlideIn generates personalized emails, automates sending, tracks replies, and visualizes analytics; framed as 'Tinder for outreach'." },
   { "id": "proj-slidein-3", "type": "project", "content": "Tech stack: Next.js, React, Tailwind, Supabase, OpenAI API; focus on deliverability, logging, and real-time analytics for iteration." },
   { "id": "proj-slidein-4", "type": "project", "content": "Demonstrates product execution under time constraints: built core MVP <24 hours with clean UX, onboarding, and demo-ready flows." },
