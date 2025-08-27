@@ -1,151 +1,88 @@
-import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileText, Download, Github, Instagram, Linkedin, Twitter } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { FaLinkedin, FaEnvelope, FaTwitter } from "react-icons/fa";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { BackgroundGradient } from "@/components/ui/BackgroundGradient";
-import { useRef, useEffect, useState } from "react";
+import { useState, useRef } from "react";
 
 const fadeUpVariants = {
-  initial: { opacity: 0, y: 30 },
+  initial: { opacity: 0, y: 40 },
   animate: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.15,
-      duration: 0.8,
-      ease: [0.215, 0.61, 0.355, 1],
+      delay: i * 0.1,
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1],
     },
   }),
 };
 
+const containerVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const imageVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.8,
+      delay: 0.2,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const textVariants = {
+  initial: { opacity: 0, y: 50 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      delay: 0.4,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
 export function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [showResume, setShowResume] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   
-  // Mouse tracking setup with normalized coordinates
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Smooth spring physics for fluid motion
-  const smoothX = useSpring(mouseX, {
-    stiffness: 40,
-    damping: 30,
-    mass: 0.5
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
   });
   
-  const smoothY = useSpring(mouseY, {
-    stiffness: 40,
-    damping: 30,
-    mass: 0.5
-  });
-
-  // Transform ranges for different elements
-  const moveX = useTransform(smoothX, [-1, 1], [-20, 20]);
-  const moveY = useTransform(smoothY, [-1, 1], [-20, 20]);
-  const rotateX = useTransform(smoothY, [-1, 1], [2, -2]);
-  const rotateY = useTransform(smoothX, [-1, 1], [-2, 2]);
-
-  // Scale transforms for blob elements
-  const blobScale = useTransform(
-    smoothX,
-    [-1, 0, 1],
-    [0.95, 1, 0.95]
-  );
-
-  // Update mouse position with normalized coordinates
-  const handleMouseMove = (event: React.MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (rect) {
-      // Convert to normalized coordinates (-1 to 1)
-      const x = (event.clientX - rect.left) / rect.width * 2 - 1;
-      const y = (event.clientY - rect.top) / rect.height * 2 - 1;
-      mouseX.set(x);
-      mouseY.set(y);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    // Smoothly reset to center
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      mouseX.destroy();
-      mouseY.destroy();
-    };
-  }, []);
+  const yTransform = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   return (
     <section 
-      id="home" 
-      className="min-h-[90vh] flex items-center pt-20 relative overflow-hidden"
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      id="home" 
+      className="relative min-h-screen bg-white overflow-hidden flex items-center py-20 md:translate-x-4 lg:translate-x-8"
     >
-      {/* Interactive background layer */}
-      <motion.div 
-        className="absolute inset-0 overflow-hidden"
-        style={{
-          rotateX,
-          rotateY,
-          perspective: "1000px"
-        }}
-      >
-        {/* Primary gradient background */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-blue/[0.07] via-purple/[0.05] to-blue/[0.07] dark:from-blue/[0.05] dark:via-purple/[0.03] dark:to-blue/[0.05]"
-          style={{
-            x: moveX,
-            y: moveY,
-          }}
-        />
+      {/* Minimal background element */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-blue-50/20 to-purple-50/20 rounded-full blur-3xl opacity-30" />
+      </div>
 
-        {/* Animated gradient blobs */}
-        <motion.div
-          className="absolute -top-1/2 -left-1/2 w-full h-full"
-          style={{
-            x: useTransform(smoothX, [-1, 1], [-10, 10]),
-            y: useTransform(smoothY, [-1, 1], [-10, 10]),
-            scale: blobScale
-          }}
-        >
-          <div className="absolute w-[800px] h-[800px] bg-gradient-to-r from-blue/[0.08] to-transparent dark:from-blue/[0.06] rounded-full blur-3xl" />
-        </motion.div>
-
-        <motion.div
-          className="absolute -bottom-1/2 -right-1/2 w-full h-full"
-          style={{
-            x: useTransform(smoothX, [-1, 1], [10, -10]),
-            y: useTransform(smoothY, [-1, 1], [10, -10]),
-            scale: blobScale
-          }}
-        >
-          <div className="absolute w-[800px] h-[800px] bg-gradient-to-l from-purple/[0.08] to-transparent dark:from-purple/[0.06] rounded-full blur-3xl" />
-        </motion.div>
-
-        {/* Subtle animated accent elements */}
-        <motion.div
-          className="absolute inset-0"
-          style={{ x: moveX, y: moveY }}
-        >
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue/[0.03] dark:bg-blue/[0.02] rounded-full blur-2xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple/[0.03] dark:bg-purple/[0.02] rounded-full blur-2xl" />
-        </motion.div>
-      </motion.div>
-
-      <BackgroundGradient />
-      
       <Dialog open={showResume} onOpenChange={setShowResume}>
-        <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col gap-4 p-4 sm:p-6 rounded-xl shadow-xl bg-background/95 backdrop-blur-sm border border-blue/10">
+        <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col gap-4 p-4 sm:p-6 rounded-lg shadow-xl bg-white border border-gray-200">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold text-foreground/90">Resume</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-gray-900">Resume</DialogTitle>
           </div>
-
-          <div className="flex-1 relative rounded-lg overflow-hidden border border-muted bg-muted/30">
+          <div className="flex-1 relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
             <iframe
               src="/resume.pdf#view=FitH&zoom=100"
               className="absolute inset-0 w-full h-full"
@@ -156,166 +93,232 @@ export function HeroSection() {
         </DialogContent>
       </Dialog>
 
-      <div className="section mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center">
-          <div className="md:col-span-7 order-2 md:order-1">
-            <div className="flex flex-col gap-4 text-left md:pr-8">
-              <motion.span
-                variants={fadeUpVariants}
-                initial="initial"
-                animate="animate"
-                custom={0}
-                className="text-2xl font-display text-muted-foreground/80 font-light"
-              >
-                Hey 👋 I'm
-              </motion.span>
-
-              <motion.h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
-                variants={fadeUpVariants}
-                initial="initial"
-                animate="animate"
-                custom={1}
-              >
-                <span className="block">Krishiv Khatri</span>
-                <span className="text-gradient">CE Student & Builder</span>
-              </motion.h1>
-
-              <motion.p 
-                className="text-lg md:text-xl text-muted-foreground max-w-md"
-                variants={fadeUpVariants}
-                initial="initial"
-                animate="animate"
-                custom={2}
-              >
-                I build digital experiences that help people solve real problems.
-              </motion.p>
-
-              <motion.div 
-                className="flex flex-wrap gap-4 mt-4"
-                variants={fadeUpVariants}
-                initial="initial"
-                animate="animate"
-                custom={3}
-              >
-                <Button 
-                  className="bg-gradient-to-r from-blue to-purple hover:from-blue-dark hover:to-purple-dark button-glow text-white relative overflow-hidden group" 
-                  size="lg" 
-                  asChild
-                >
-                  <a href="#projects">
-                    <motion.span
-                      className="absolute inset-0 bg-white/20"
-                      initial={{ x: "100%" }}
-                      whileHover={{ x: "-100%" }}
-                      transition={{ duration: 0.4 }}
-                    />
-                    View my work
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </Button>
-
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="button-glow hover:bg-blue/5 hover:text-blue border-blue/20 hover:border-blue/50 relative overflow-hidden group"
-                  onClick={() => setShowResume(true)}
-                >
-                  <motion.span
-                    className="absolute inset-0 bg-blue/5"
-                    initial={{ y: "100%" }}
-                    whileHover={{ y: "0%" }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <FileText className="mr-1 h-4 w-4 group-hover:scale-110 transition-transform" />
-                  Resume
-                </Button>
-              </motion.div>
-
-              <motion.div 
-                className="flex gap-4 mt-6"
-                variants={fadeUpVariants}
-                initial="initial"
-                animate="animate"
-                custom={4}
-              >
-                <motion.a
-                  href="https://github.com/Krishiv2409"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-blue transition-colors duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="GitHub"
-                >
-                  <Github className="h-5 w-5" />
-                </motion.a>
-                <motion.a
-                  href="https://linkedin.com/in/krishiv-khatri"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-blue transition-colors duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </motion.a>
-                <motion.a
-                  href="https://twitter.com/krishivkhatri"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-blue transition-colors duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-5 w-5" />
-                </motion.a>
-                <motion.a
-                  href="https://instagram.com/_krishiv__"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-blue transition-colors duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </motion.a>
-              </motion.div>
-            </div>
-          </div>
-
-          <div className="md:col-span-5 order-1 md:order-2 flex justify-center">
-            <div className="relative flex items-center justify-center">
-              {/* Profile image container */}
-              <motion.div 
-                className="relative rounded-full overflow-hidden w-[450px] h-[450px] border border-white/10 shadow-2xl"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
-                whileHover={{ scale: 1.02 }}
-              >
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue/5 to-purple/5 mix-blend-overlay pointer-events-none" />
-                
-                {/* Profile image */}
+      <motion.div 
+        className="section relative z-10"
+        style={{ y: yTransform }}
+      >
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh] lg:justify-start lg:max-w-5xl"
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+        >
+          {/* Profile Photo - Left Column */}
+          {/* 
+          🖼️ PHOTO CONTROLS:
+          
+          HORIZONTAL ALIGNMENT:
+          - justify-center: Centered (current)
+          - justify-start: Left aligned  
+          - justify-end: Right aligned (brings closer to text)
+          
+          PHOTO SIZE:
+          - w-80 h-96 lg:w-96 lg:h-[32rem]: Current size (320px/384px, 384px/512px)
+          - w-72 h-90 lg:w-80 lg:h-[28rem]: Smaller
+          - w-96 h-[30rem] lg:w-[28rem] lg:h-[36rem]: Larger
+          */}
+          <motion.div 
+            className="order-2 lg:order-1 flex justify-center lg:justify-end"
+            variants={fadeUpVariants}
+            custom={0}
+          >
+            <motion.div 
+              className="relative w-80 h-96 lg:w-96 lg:h-[28rem] xl:w-[26rem] xl:h-[32rem]"
+              variants={imageVariants}
+              initial="initial"
+              animate="animate"
+            >
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl bg-white">
                 <img
                   src="/images/krishiv.jpg"
                   alt="Krishiv Khatri"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-2xl"
                   style={{
-                    objectPosition: "center center",
-                    imageRendering: "pixelated"
+                    objectPosition: "center center"
                   }}
                   loading="eager"
                 />
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Text Content - Right Column */}
+          {/* 
+          📝 TEXT CONTROLS:
+          
+          TEXT ALIGNMENT:
+          - text-center lg:text-left: Center on mobile, left on desktop (current)
+          - text-center: Always centered
+          - text-left: Always left aligned
+          
+          CONTENT WIDTH:
+          - No constraint: Full width (current)
+          - max-w-xl: Narrow text (576px)
+          - max-w-2xl: Medium text (672px) 
+          - max-w-3xl: Wide text (768px)
+          */}
+          <motion.div 
+            className="order-1 lg:order-2 text-center lg:text-left"
+            variants={fadeUpVariants}
+            custom={1}
+          >
+            <motion.div className="space-y-4">
+              <motion.div
+                variants={fadeUpVariants}
+                custom={2}
+              >
+                <motion.h1 
+                  className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight text-black"
+                  variants={textVariants}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <motion.span 
+                    className="inline-block"
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    Krishiv
+                  </motion.span>{" "}
+                  <motion.span 
+                    className="inline-block"
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    Khatri
+                  </motion.span>
+                </motion.h1>
               </motion.div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+              <motion.p 
+                className="text-xl font-medium text-gray-600"
+                variants={fadeUpVariants}
+                custom={3}
+              >
+                Computer Science Student at Georgia Tech
+              </motion.p>
+
+              <motion.p 
+                className="text-lg leading-relaxed text-gray-700 max-w-xl mx-auto lg:mx-0"
+                variants={fadeUpVariants}
+                custom={4}
+              >
+                Passionate about leveraging technology to foster innovation and create meaningful impact through software engineering and product development.
+              </motion.p>
+
+              {/* Contact Information */}
+              <motion.div 
+                className="flex flex-col gap-2 justify-center lg:justify-start pt-4"
+                variants={fadeUpVariants}
+                custom={4.5}
+              >
+                <motion.a
+                  href="mailto:krishivkhatri@gatech.edu"
+                  className="text-gray-700 hover:text-blue-600 transition-colors duration-300"
+                  whileHover={{ x: 6, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="font-bold text-gray-900">Email:</span> krishivkhatri@gatech.edu
+                </motion.a>
+                
+                <motion.a
+                  href="tel:+14042693031"
+                  className="text-gray-700 hover:text-blue-600 transition-colors duration-300"
+                  whileHover={{ x: 6, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="font-bold text-gray-900">Phone:</span> (404) 269-3031
+                </motion.a>
+              </motion.div>
+
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-6"
+                variants={fadeUpVariants}
+                custom={5}
+              >
+                <motion.div
+                  whileHover={{ y: -3, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Button 
+                    className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm hover:shadow-lg" 
+                    onClick={() => setShowResume(true)}
+                  >
+                    Resume
+                  </Button>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ y: -3, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
+                  <Button 
+                    variant="outline" 
+                    className="border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-lg font-medium transition-all duration-300 group"
+                    asChild
+                  >
+                    <a href="#projects">
+                      View Projects
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                    </a>
+                  </Button>
+                </motion.div>
+              </motion.div>
+
+              {/* Social Links */}
+              <motion.div 
+                className="flex gap-6 justify-center lg:justify-start pt-6"
+                variants={fadeUpVariants}
+                custom={6}
+              >
+                {[
+                  { 
+                    href: "https://linkedin.com/in/krishiv-khatri", 
+                    icon: FaLinkedin, 
+                    label: "LinkedIn",
+                    color: "#0077B5"
+                  },
+                  { 
+                    href: "https://x.com/krishivkhatri", 
+                    icon: FaTwitter, 
+                    label: "Twitter",
+                    color: "#1DA1F2"
+                  }
+                ].map(({ href, icon: Icon, label, color }, index) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group"
+                    aria-label={label}
+                    whileHover={{ 
+                      scale: 1.2, 
+                      y: -4,
+                      rotate: [0, -10, 10, 0],
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      delay: 1.2 + index * 0.1,
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20
+                    }}
+                  >
+                    <Icon className="social-icon h-6 w-6 transition-all duration-300" style={{ color: color }} />
+                  </motion.a>
+                ))}
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

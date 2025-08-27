@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MessageSquare, Send, Github, Linkedin, Twitter, Instagram } from "lucide-react";
+import { Calendar, Github, Linkedin, Twitter, Instagram } from "lucide-react";
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
 
 export function ContactSection() {
   const { toast } = useToast();
@@ -65,180 +66,182 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative py-32">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-purple/5 to-background">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,rgba(124,58,237,0.05),transparent_50%)]" />
-      </div>
+    <section id="contact" className="relative py-20 md:py-24 border-t border-border/20">
       <div className="section relative">
         <h2 className="section-title">Get In Touch</h2>
-        <p className="text-muted-foreground max-w-2xl mt-4">
-          Have a project in mind or just want to chat? Feel free to reach out!
-        </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">
           <div>
-            <div className="card p-8">
-              <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
-                <MessageSquare className="text-highlight h-5 w-5" />
-                Send me a message
-              </h3>
-
-              {isSubmitted ? (
-                <div className="bg-highlight/10 border border-highlight/20 rounded-lg p-4 text-center animate-fade-in">
-                  <p className="font-medium text-lg">Thanks for reaching out!</p>
-                  <p className="text-muted-foreground mt-1">
-                    I'll get back to you as soon as possible.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Name
-                    </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formState.name}
-                      onChange={handleChange}
-                      placeholder="your name"
-                      required
-                      minLength={2}
-                      className="w-full"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formState.email}
-                      onChange={handleChange}
-                      placeholder="your.email@example.com"
-                      required
-                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                      className="w-full"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formState.message}
-                      onChange={handleChange}
-                      placeholder="What's on your mind?"
-                      rows={5}
-                      required
-                      minLength={10}
-                      className="w-full"
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    variant="accent"
-                    disabled={isSubmitting}
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-semibold">Schedule a Call</h3>
+              <motion.div
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Button asChild variant="outline" size="sm">
+                  <a 
+                    href="https://cal.com/krishivkhatri" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
                   >
-                    {isSubmitting ? (
-                      <>
-                        <span className="animate-spin mr-2">⏳</span>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="mr-2 h-4 w-4" />
-                        Send Message
-                      </>
-                    )}
-                  </Button>
-                </form>
-              )}
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Open in new tab
+                  </a>
+                </Button>
+              </motion.div>
+            </div>
+            <div className="bg-card border rounded-xl overflow-hidden">
+              <iframe
+                src="https://cal.com/krishivkhatri?embed=true"
+                width="100%"
+                height="600"
+                frameBorder="0"
+                title="Schedule a call with Krishiv"
+                className="w-full"
+                style={{ minHeight: '600px' }}
+              />
             </div>
           </div>
 
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
-              <div className="space-y-4">
-                <a
-                  href="mailto:krishivkhatri@gatech.edu"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
-                    <Mail className="h-5 w-5 text-highlight" />
+          <div>
+            <h3 className="text-2xl font-semibold mb-6">Other Ways to Connect</h3>
+            
+            <div className="space-y-6">
+                <div>
+                  <h4 className="text-lg font-medium mb-3">Contact</h4>
+                  <div className="space-y-2">
+                    <a
+                      href="mailto:krishivkhatri@gatech.edu"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      krishivkhatri@gatech.edu
+                    </a>
+                    <a
+                      href="mailto:krishivkhatri2409@gmail.com"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      krishivkhatri2409@gmail.com
+                    </a>
+                    <a
+                      href="tel:+17709915129"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      +1 (770) 991-5129
+                    </a>
                   </div>
-                  <span>krishivkhatri@gatech.edu</span>
-                </a>
-              </div>
-            </div>
+                </div>
 
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Social Links</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a
-                  href="https://github.com/Krishiv2409" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
-                    <Github className="h-5 w-5 text-highlight" />
+                <div>
+                  <h4 className="text-lg font-medium mb-3">Social</h4>
+                  <div className="flex gap-4">
+                    <motion.a
+                      href="https://github.com/Krishiv2409" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      whileHover={{ y: -1, scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Github className="h-5 w-5" />
+                    </motion.a>
+                    <motion.a
+                      href="https://linkedin.com/in/krishiv-khatri"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      whileHover={{ y: -1, scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Linkedin className="h-5 w-5" />
+                    </motion.a>
+                    <motion.a
+                      href="https://x.com/krishivkhatri"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      whileHover={{ y: -1, scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Twitter className="h-5 w-5" />
+                    </motion.a>
+                    <motion.a
+                      href="https://instagram.com/_krishiv__"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      whileHover={{ y: -1, scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Instagram className="h-5 w-5" />
+                    </motion.a>
                   </div>
-                  <span>GitHub</span>
-                </a>
-                
-                <a
-                  href="https://linkedin.com/in/krishiv-khatri"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
-                    <Linkedin className="h-5 w-5 text-highlight" />
-                  </div>
-                  <span>LinkedIn</span>
-                </a>
-                
-                <a
-                  href="https://x.com/krishivkhatri"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
-                    <Twitter className="h-5 w-5 text-highlight" />
-                  </div>
-                  <span>Twitter</span>
-                </a>
+                </div>
 
-                <a
-                  href="https://instagram.com/_krishiv__"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <div className="h-10 w-10 rounded-full bg-highlight/10 flex items-center justify-center">
-                    <Instagram className="h-5 w-5 text-highlight" />
-                  </div>
-                  <span>Instagram</span>
-                </a>
-              </div>
-            </div>
-
-            <div className="card p-6 bg-highlight/5 border-highlight/20">
-              <h3 className="text-lg font-semibold mb-3">Availability</h3>
-              <p className="text-muted-foreground">
-                I'm currently open to freelance projects, collaborations, and full-time opportunities. Let's build something amazing together!
-              </p>
+                <div>
+                  <h4 className="text-lg font-medium mb-3">Send a Message</h4>
+                  {isSubmitted ? (
+                    <div className="bg-muted/50 rounded-lg p-4 text-center">
+                      <p className="font-medium">Thanks for reaching out!</p>
+                      <p className="text-muted-foreground text-sm mt-1">
+                        I'll get back to you as soon as possible.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <Input
+                        name="name"
+                        value={formState.name}
+                        onChange={handleChange}
+                        placeholder="Your name"
+                        required
+                        minLength={2}
+                        className="font-sans"
+                      />
+                      <Input
+                        name="email"
+                        type="email"
+                        value={formState.email}
+                        onChange={handleChange}
+                        placeholder="your.email@example.com"
+                        required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        className="font-sans"
+                      />
+                      <Textarea
+                        name="message"
+                        value={formState.message}
+                        onChange={handleChange}
+                        placeholder="What's on your mind?"
+                        rows={4}
+                        required
+                        minLength={10}
+                        className="font-sans resize-none"
+                      />
+                      <motion.div
+                        whileHover={{ y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Button 
+                          type="submit" 
+                          variant="outline"
+                          className="w-full"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <span className="animate-spin mr-2">⏳</span>
+                              Sending...
+                            </>
+                          ) : (
+                            "Send Message"
+                          )}
+                        </Button>
+                      </motion.div>
+                    </form>
+                  )}
+                </div>
             </div>
           </div>
         </div>

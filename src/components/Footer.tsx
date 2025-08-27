@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export function Footer() {
   const scrollToTop = () => {
@@ -11,7 +12,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-muted/30 dark:bg-muted/10 py-12">
+    <footer className="bg-muted/30 dark:bg-muted/10 py-16 border-t border-border/20">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
@@ -47,15 +48,21 @@ export function Footer() {
             </a>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={scrollToTop}
-            className="rounded-full"
-            aria-label="Scroll to top"
+          <motion.div
+            whileHover={{ y: -2, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
-            <ArrowUp className="h-5 w-5" />
-          </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={scrollToTop}
+              className="rounded-full"
+              aria-label="Scroll to top"
+            >
+              <ArrowUp className="h-5 w-5" />
+            </Button>
+          </motion.div>
         </div>
       </div>
     </footer>

@@ -1,0 +1,17 @@
+# Project Images
+
+Place your project images in this folder with the following naming convention:
+- slidein.jpg (or .png/.gif) - SlideIn project
+- ecommerce.jpg - E-commerce Platform  
+- climate.jpg - Climate Data Visualization
+- taskmanager.jpg - Task Management App
+
+Recommended image specifications:
+- Size: 1024x768 or similar 4:3 aspect ratio
+- Format: JPG, PNG, or GIF (for demos)
+- File size: Keep under 2MB for good performance
+
+To add a new image:
+1. Save your image file in this folder
+2. Update the image path in ProjectsSection.tsx
+3. Use the format: "/images/projects/your-image-name.jpg"

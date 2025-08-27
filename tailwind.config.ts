@@ -73,7 +73,7 @@ export default {
 					dark: '#7E22CE'
 				},
 				highlight: '#3B82F6',
-				highlightDark: '#A855F7',
+				highlightDark: '#2563EB',
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
