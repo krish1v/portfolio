@@ -11,6 +11,54 @@ async function parseJsonBody(req) {
   });
 }
 
+async function loadKnowledge(req) {
+  // Try JSON module import (Node 20+). Node 18 may not support this.
+  try {
+    const mod = await import('../knowledge.json', { assert: { type: 'json' } });
+    if (Array.isArray(mod?.default) && mod.default.length) return mod.default;
+  } catch {}
+
+  // Fallback to filesystem paths
+  try {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const url = await import('node:url');
+    const here = url.fileURLToPath(import.meta.url);
+    const dir = path.dirname(here);
+    const candidates = [
+      path.join(process.cwd(), 'knowledge.json'),
+      path.join(dir, '..', 'knowledge.json'),
+      path.join(dir, 'knowledge.json'),
+      path.join(process.cwd(), '../knowledge.json'),
+    ];
+    for (const p of candidates) {
+      try {
+        if (fs.existsSync(p)) {
+          const raw = fs.readFileSync(p, 'utf-8');
+          const data = JSON.parse(raw);
+          if (Array.isArray(data)) return data;
+        }
+      } catch {}
+    }
+  } catch {}
+
+  // Final fallback: fetch from same deployment if available (requires knowledge.json to be in /public)
+  try {
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    if (host) {
+      const url = `${proto}://${host}/knowledge.json`;
+      const resp = await fetch(url);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data)) return data;
+      }
+    }
+  } catch {}
+
+  return [];
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
@@ -33,11 +81,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { default: knowledge } = await import('../knowledge.json', { assert: { type: 'json' } }).catch(async () => ({ default: [] }));
+    const knowledge = await loadKnowledge(req);
     const body = await parseJsonBody(req);
     const query = String(body.query || '').toLowerCase();
 
-    const pick = (type) => (Array.isArray(knowledge) ? knowledge : []).filter((it) => it && it.type === type).map((it) => it.content);
+    const pick = (type) => (Array.isArray(knowledge) ? knowledge : [])
+      .filter((it) => it && it.type === type)
+      .map((it) => it.content);
 
     let answer = '';
     if (["skill","skills","tech","stack","technical"].some((w) => query.includes(w))) {
