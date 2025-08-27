@@ -172,7 +172,7 @@ export function ChatSection() {
             What would you like to know?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Ask me anything about my experience, projects, or background
+            Ask my personal agent anything about my experience, projects, or background
           </p>
         </motion.div>
 
