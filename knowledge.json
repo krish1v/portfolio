@@ -1,118 +1,98 @@
 [
-  {
-    "id": "intro-1",
-    "type": "motivation",
-    "content": "Krishiv is a builder focused on high-impact products at the intersection of AI, software, and hardware, with a long-term goal of founding a tech startup."
-  },
-  {
-    "id": "intro-2",
-    "type": "motivation",
-    "content": "He is driven by curiosity and speed of learning—prefers shipping polished, useful tools over theory, and iterating based on real user feedback."
-  },
-  {
-    "id": "intro-3",
-    "type": "motivation",
-    "content": "Internationally minded (grew up in Hong Kong, now at Georgia Tech), he values cross-cultural collaboration and building communities around ambitious ideas."
-  },
+  { "id": "intro-1", "type": "motivation", "content": "Krishiv is a builder focused on shipping practical, high-impact products at the intersection of AI, software, and UX, with a long-term goal of founding a tech startup." },
+  { "id": "intro-2", "type": "motivation", "content": "He optimizes for speed of learning and user impact: prototype fast, test with real users, iterate toward polished, reliable systems." },
+  { "id": "intro-3", "type": "motivation", "content": "International background (Hong Kong → Georgia Tech) shapes his bias for cross-cultural collaboration, clear communication, and community building." },
 
-  { "id": "edu-1", "type": "experience", "content": "Computer Science student at Georgia Tech, pursuing threads in Artificial Intelligence and People and is pursuing a minor in Business." },
-  { "id": "edu-2", "type": "experience", "content": "Plans to participate in CREATE-X to accelerate a startup idea from prototype to launch." },
+  { "id": "exp-gfox-1", "type": "experience", "content": "GFO-X — Software Developer Intern (Summer 2024): built AI-driven Jira/Confluence agents for document classification and retrieval using embeddings + cosine similarity." },
+  { "id": "exp-gfox-2", "type": "experience", "content": "At GFO-X, implemented a RAG pipeline (vLLM + LangChain + PyTorch) and scored >90% on RAGAS metrics for internal knowledge tasks." },
+  { "id": "exp-gfox-3", "type": "experience", "content": "Designed a ReAct multi-agent workflow with gap analysis, automated ticketing, progress tracking, and sentiment checks for engineering ops." },
+  { "id": "exp-gfox-4", "type": "experience", "content": "Cut QA time by ~70% using pytest suites and automation; shipped a production-ready PoC in <2 months adopted by 5+ business units." },
+  { "id": "exp-gfox-5", "type": "experience", "content": "Built a Confluence scraper and classifier to populate 1,000+ docs into PostgreSQL for fast semantic search across engineering and ops." },
+  { "id": "exp-gfox-6", "type": "experience", "content": "Collaborated across infra, development, market ops, quant, and compliance—demonstrating applied AI inside a regulated finance context." },
 
-  { "id": "skill-1", "type": "skill", "content": "Proficient in modern web development with TypeScript, React/Next.js, Tailwind, and API design." },
-  { "id": "skill-2", "type": "skill", "content": "Mobile development with React Native (Expo), strong attention to UI polish, motion, and dark-mode quality." },
-  { "id": "skill-3", "type": "skill", "content": "AI integration: OpenAI API, prompt engineering, embeddings, and light RAG patterns." },
-  { "id": "skill-4", "type": "skill", "content": "Vector search: familiar with various databases (e.g., pgvector); able to build context-aware chat using retrieved knowledge." },
-  { "id": "skill-5", "type": "skill", "content": "Graph reasoning: experience with knowledge graphs (e.g., Neo4j) for modeling relationships and orchestration logic." },
-  { "id": "skill-6", "type": "skill", "content": "Databases and backend: Supabase/Postgres, authentication, access control, and basic real-time features." },
-  { "id": "skill-7", "type": "skill", "content": "Embedded systems: Arduino/C++, UART serial communication, Bluetooth LE modules, servo control, and power management." },
-  { "id": "skill-8", "type": "skill", "content": "Robotics: path planning, obstacle avoidance, and asynchronous programming for concurrent sensor/actuator control." },
-  { "id": "skill-9", "type": "skill", "content": "Product and UX: systems thinking, clean typography, grid layout, micro-interactions, and recruiter-friendly storytelling." },
+  { "id": "proj-slidein-1", "type": "project", "content": "SlideIn — AI cold-outreach platform: won 1st place at Georgia Tech Shipathon; launch reached 500k+ impressions across social platforms." },
+  { "id": "proj-slidein-2", "type": "project", "content": "SlideIn generates personalized emails, automates sending, tracks replies, and visualizes analytics; framed as 'Tinder for outreach'." },
+  { "id": "proj-slidein-3", "type": "project", "content": "Tech stack: Next.js, React, Tailwind, Supabase, OpenAI API; focus on deliverability, logging, and real-time analytics for iteration." },
+  { "id": "proj-slidein-4", "type": "project", "content": "Demonstrates product execution under time constraints: built core MVP <24 hours with clean UX, onboarding, and demo-ready flows." },
 
-  { "id": "proj-slidein-1", "type": "project", "content": "SlideIn is an AI-powered cold-outreach platform that won 1st place at Georgia Tech’s Shipathon and reached 500k+ impressions after launch." },
-  { "id": "proj-slidein-2", "type": "project", "content": "Built in under 24 hours: generates personalized outreach, automates sending, tracks replies, and visualizes analytics—framed as “Tinder for outreach.”" },
+  { "id": "proj-linkup-1", "type": "project", "content": "LinkUp — mobile social event discovery for Southeast Asia (Hong Kong, Singapore, Kuala Lumpur); Gen-Z-focused UI." },
+  { "id": "proj-linkup-2", "type": "project", "content": "Implements user auth, event creation/RSVPs, private/invite-only events, and a friends system (requests, approvals, social feed)." },
+  { "id": "proj-linkup-3", "type": "project", "content": "Tech stack: React Native (Expo), TypeScript, Supabase; animated bottom tabs, dark theme, and modern mobile patterns." },
+  { "id": "proj-linkup-4", "type": "project", "content": "Business angle: early manual event curation and commission-based organizer deals to prove traction and monetize discovery." },
 
-  { "id": "proj-linkup-1", "type": "project", "content": "LinkUp is a social event discovery platform for Southeast Asia (Hong Kong, Singapore, Kuala Lumpur) with a Gen-Z focused mobile UX." },
-  { "id": "proj-linkup-2", "type": "project", "content": "Implements user auth, event creation/RSVPs, private/invite-only events, and a friends system (requests, approvals, social feed) on Supabase." },
+  { "id": "proj-agentzeta-1", "type": "project", "content": "Agent Zeta — research toward agent 'intuition' using dynamic knowledge graphs for reasoning beyond straightforward task execution." },
+  { "id": "proj-agentzeta-2", "type": "project", "content": "Focus: orchestration over a world model that links entities and risks; explores psychological tasks and risk-rooted demos." },
+  { "id": "proj-agentzeta-3", "type": "project", "content": "Technical themes: graph schemas (Neo4j), retrieval + reasoning loops, causal edges, and tool-augmented agent plans." },
 
-  { "id": "proj-bluetooth-1", "type": "project", "content": "Bluetooth Light Switch: Arduino + Adafruit Bluefruit LE UART + servo to toggle a physical light switch from a phone—built to automate a bunk-bed dorm setup." },
-  { "id": "proj-bluetooth-2", "type": "project", "content": "Demonstrates embedded programming, stable power distribution, UART parsing, and a custom 3D-printed mount for secure housing." },
+  { "id": "proj-bluetooth-1", "type": "project", "content": "Bluetooth Light Switch — Arduino + Adafruit Bluefruit LE UART + servo to toggle a physical switch via phone; built to automate a bunk-bed dorm setup." },
+  { "id": "proj-bluetooth-2", "type": "project", "content": "Demonstrates embedded C++, UART parsing, power distribution, and 3D-printed mounts for robust everyday use." },
 
-  { "id": "proj-robot-1", "type": "project", "content": "Autonomous Delivery Robot: multifunctional robot for maze navigation, target delivery, and room sweeping using path-planning and obstacle avoidance." },
-  { "id": "proj-robot-2", "type": "project", "content": "Uses asynchronous control in C++ to read sensors and drive motors concurrently for responsive real-time navigation." },
+  { "id": "proj-robot-1", "type": "project", "content": "Autonomous Delivery Robot — path-planning, obstacle avoidance, and async control for maze navigation, waypoint delivery, and sweeping." },
+  { "id": "proj-robot-2", "type": "project", "content": "Asynchronous programming in C++ to process sensor input and drive motors concurrently for smooth real-time navigation." },
 
-  { "id": "proj-flowai-1", "type": "project", "content": "Flow AI: student productivity concept that extracts structured data from syllabi and generates gamified, bite-sized study plans via the OpenAI API." },
+  { "id": "proj-flowai-1", "type": "project", "content": "Flow AI — extracts structured data from syllabi and generates gamified, bite-sized study plans using OpenAI API." },
 
-  { "id": "proj-heston-1", "type": "project", "content": "Heston Volatility Model: implemented stochastic volatility pricing for options with attention to arbitrage constraints and realistic market dynamics." },
+  { "id": "proj-heston-1", "type": "project", "content": "Heston Volatility Model — implemented stochastic volatility pricing with attention to arbitrage constraints for realistic option dynamics." },
 
-  { "id": "proj-nft-1", "type": "project", "content": "Shark Sanctuary NFT Collection (Polygon): designed and coded 888 unique NFTs to raise awareness about shark finning with Hong Kong Shark Foundation." },
-  { "id": "proj-nft-2", "type": "project", "content": "Gained media recognition (RTHK 3 radio and Around Discovery Bay magazine) and educated audiences on conservation using web3." },
+  { "id": "proj-nft-1", "type": "project", "content": "Shark Sanctuary NFT Collection — 888 NFTs on Polygon with Hong Kong Shark Foundation to raise awareness against shark finning." },
+  { "id": "proj-nft-2", "type": "project", "content": "Received media coverage (RTHK 3, Around Discovery Bay); combined coding, art generation, and cause-driven storytelling." },
 
-  { "id": "proj-agentzeta-1", "type": "project", "content": "Agent Zeta: explores giving agents “intuition” using dynamic knowledge graphs and orchestration for decision-making beyond simple task execution." },
-  { "id": "proj-agentzeta-2", "type": "project", "content": "Investigates risk-aware world models and RAO-style interfaces to connect domains (e.g., cybersecurity to supply chain) via causal relationships." },
-  { 
-    "id": "exp-gfox-1", 
-    "type": "experience", 
-    "content": "BEST AND MOST RECENT: Software Developer Intern at GFO-X (Summer 2025): built Jira/Confluence agents using embeddings and cosine similarity to classify and retrieve internal knowledge." 
-  },
-  { 
-    "id": "exp-fundfluent-1", 
-    "type": "experience", 
-    "content": "Intern at Fundfluent (Summers 2022 & 2023): Built an AI-powered SEO blogging workflow and contributed to financing tools that support startups and SMEs. Selected by the CEO after a pitch competition and delivered projects that directly supported early-stage founders." 
-  },
-  { 
-    "id": "exp-polyu-1", 
-    "type": "experience", 
-    "content": "Junior Researcher at The Hong Kong Polytechnic University (2021–2022): Conducted applied research on proton-exchange membrane fuel cells. Built and tested a model car powered by a passive fuel cell stack under the mentorship of three professors in the Department of Mechanical Engineering." 
-  },
-  { 
-    "id": "exp-vcclub-1", 
-    "type": "experience", 
-    "content": "Research Analyst at Georgia Tech Venture Capital Club (2024–present): Contributes to market analysis and investment theses, focusing on AI startups. Helped prepare newsletter content highlighting trends in applied AI and early-stage company building." 
-  },
-  { 
-    "id": "exp-startupex-1", 
-    "type": "experience", 
-    "content": "Community Growth Team at Startup Exchange, Georgia Tech (2025–present): Builds partnerships with AI, FinTech, Product, and VC organizations to co-host events, connect builders, and expand Atlanta’s student startup ecosystem." 
-  },
-  { 
-    "id": "exp-headstudent-1", 
-    "type": "experience", 
-    "content": "Head Student at West Island School (2021–2022): Represented ~18,000 students from over 80 nationalities. Focused on inclusive leadership, cross-cultural collaboration, and giving students a stronger voice in school governance." 
-  },
-  { 
-    "id": "exp-kids4kids-1", 
-    "type": "experience", 
-    "content": "Volunteer Leader at Kids4Kids (2019–2022): Oversaw a team of ~25 to tutor underprivileged youth. Produced 30+ STEM YouTube lessons for global audiences and organized hands-on building kits in partnership with nonprofits to promote accessible STEM education." 
-  },
-  { 
-    "id": "exp-trading-1", 
-    "type": "experience", 
-    "content": "Equities Analyst at Georgia Tech Trading Club (2024–present): Led a student team in the Wharton Global High School Investment Competition, focusing on equity research and portfolio strategy while mentoring peers in valuation and trading fundamentals." 
-  },
+  { "id": "skill-core-1", "type": "skill", "content": "Python: data processing, backend services, AI tooling, and automation; comfortable structuring production-ready packages." },
+  { "id": "skill-core-2", "type": "skill", "content": "FastAPI: builds typed, testable REST endpoints with Pydantic schemas, auth, and rate limiting where needed." },
+  { "id": "skill-core-3", "type": "skill", "content": "Pytest: rigorous unit/integration tests; CI-friendly; used to cut QA time ~70% in internship projects." },
+  { "id": "skill-core-4", "type": "skill", "content": "LangChain: tools, agents (ReAct), retrieval chains, and evaluation harnesses; integrated with vLLM for efficient inference." },
+  { "id": "skill-core-5", "type": "skill", "content": "Embeddings & RAG: chunking strategies, top-k tuning, hybrid search; experience with RAGAS for retrieval quality." },
+  { "id": "skill-core-6", "type": "skill", "content": "Knowledge Graphs: Neo4j for entity/relationship modeling; uses graph queries to support reasoning and orchestration layers." },
+  { "id": "skill-core-7", "type": "skill", "content": "Databases: Postgres/Supabase (auth, policies, RPC), vector stores (Chroma, pgvector), and indexing best practices." },
+  { "id": "skill-core-8", "type": "skill", "content": "Frontend: React/Next.js, Tailwind, motion/animation, accessibility, and clean typographic hierarchy." },
+  { "id": "skill-core-9", "type": "skill", "content": "Mobile: React Native (Expo), TypeScript, navigation patterns, and performance-aware UI for iOS/Android." },
+  { "id": "skill-core-10", "type": "skill", "content": "Embedded/Robotics: Arduino C++, UART/BLE, servo control, sensor fusion patterns, and async event loops." },
 
-  { "id": "ach-iypt-1", "type": "experience", "content": "IYPT/HKYPT: bronze at Hong Kong Young Physicists’ Tournament, represented Hong Kong internationally, placing 15th globally." },
-  { "id": "ach-shipathon-1", "type": "experience", "content": "Shipathon 2025: SlideIn won 1st place; project messaging and demo helped it go viral with 500k+ social impressions." },
+  { "id": "tags-gfox-1", "type": "skill", "content": "GFO-X tech stack: vLLM, LangChain, PyTorch, pytest, PostgreSQL, embeddings, cosine similarity, Confluence/Jira automation." },
+  { "id": "tags-slidein-1", "type": "skill", "content": "SlideIn tech stack: Next.js, React, Tailwind, Supabase, OpenAI API; analytics + reply tracking pipelines." },
+  { "id": "tags-linkup-1", "type": "skill", "content": "LinkUp tech stack: React Native (Expo), TypeScript, Supabase (auth, RLS), animated UI and dark mode." },
+  { "id": "tags-agentzeta-1", "type": "skill", "content": "Agent Zeta tech: Neo4j graph modeling, retrieval+reasoning loops, tool-use orchestration, and agent simulation tasks." },
 
-  { "id": "interest-1", "type": "interest", "content": "AI/ML applications, agents, and knowledge-graph-based reasoning for real products." },
-  { "id": "interest-2", "type": "interest", "content": "Startups and venture capital; enjoys founder-market fit thinking and distribution strategies." },
-  { "id": "interest-3", "type": "interest", "content": "FinTech and markets; applying quantitative models and AI to real financial workflows." },
-  { "id": "interest-4", "type": "interest", "content": "Developer tools and product design; cares about ergonomics, speed, and aesthetics of the builder experience." },
-  { "id": "interest-5", "type": "interest", "content": "Robotics and IoT; enjoys bridging software with the physical world through sensors and actuation." },
-  { "id": "interest-6", "type": "interest", "content": "Emotional wellness and personal growth; experiments with systems for presence, charisma, and relationship depth." },
+  { "id": "experience-fundfluent-1", "type": "experience", "content": "Fundfluent (Summers 2022–2023): built an AI-assisted SEO blogging workflow; supported SME-focused product experiments." },
+  { "id": "experience-polyu-1", "type": "experience", "content": "PolyU (2021–2022): passive PEM fuel cell car; mentored by Mechanical Engineering faculty; experimentation and parameter testing." },
 
-  { "id": "hobby-1", "type": "hobby", "content": "Plays guitar; sees music as a way to recharge and cultivate creativity." },
-  { "id": "hobby-2", "type": "hobby", "content": "Hiking and outdoor exploration; values time in nature for clarity and balance." },
-  { "id": "hobby-3", "type": "hobby", "content": "Travel; enjoys discovering new cultures and perspectives, informed by an international upbringing and study abroad." },
-  { "id": "hobby-4", "type": "hobby", "content": "Mentoring and tutoring; likes making complex concepts accessible through hands-on examples." },
-  { "id": "hobby-5", "type": "hobby", "content": "Building side projects for fun—rapid prototyping to test ideas and learn new stacks." },
+  { "id": "leadership-headstudent-1", "type": "experience", "content": "Head Student, West Island School (2021–2022): represented ~18k students from 80+ nationalities; led inclusive initiatives." },
+  { "id": "leadership-kids4kids-1", "type": "experience", "content": "Kids4Kids: led ~25 volunteers for tutoring; produced 30+ STEM videos; partnered to distribute hands-on learning kits." },
+  { "id": "community-startupex-1", "type": "experience", "content": "Startup Exchange (2025–present): community growth; co-hosts with AI/FinTech/VC orgs; builds bridges for student founders." },
+  { "id": "experience-vcclub-1", "type": "experience", "content": "Venture Capital Club (2024–present): research analyst; prepares AI startup trend analyses and newsletter content." },
 
-  { "id": "motivation-1", "type": "motivation", "content": "Motivated by solving practical problems—e.g., automating a dorm light switch for a bunk-bed setup—and scaling that mindset into products." },
-  { "id": "motivation-2", "type": "motivation", "content": "Wants to found a startup that blends AI with strong UX to deliver everyday utility, not just demos." },
-  { "id": "motivation-3", "type": "motivation", "content": "Values teams that move fast with high craftsmanship; learns best by building, shipping, and iterating with users." },
+  { "id": "achievement-shipathon-1", "type": "experience", "content": "Shipathon 2025: SlideIn won 1st place; demo emphasized fast execution, UX clarity, and measurable outreach impact." },
+  { "id": "achievement-iypt-1", "type": "experience", "content": "IYPT/HKYPT: bronze at HKYPT; represented Hong Kong at IYPT, placing 15th globally—speaking to research and defense skills." },
 
-  { "id": "kb-structure-1", "type": "skill", "content": "Understands how to build a personal RAG: chunked JSON knowledge base → embeddings → Chroma retrieval → Gemini prompt." },
-  { "id": "kb-structure-2", "type": "skill", "content": "Capable of maintaining a structured autobiography (projects, roles, skills, interests, motivations) for chatbot grounding." },
+  { "id": "interest-ai-1", "type": "interest", "content": "AI/ML applications that integrate into real workflows (retrieval, agents, eval), not just demos." },
+  { "id": "interest-startups-1", "type": "interest", "content": "Startups & VC: interested in founder-market fit, distribution, and go-to-market for AI-native products." },
+  { "id": "interest-fintech-1", "type": "interest", "content": "FinTech: applying AI to knowledge retrieval, process automation, and risk-aware decision support." },
+  { "id": "interest-devtools-1", "type": "interest", "content": "Developer Experience: clean APIs, fast feedback loops, and ergonomic tooling for builders." },
 
-  { "id": "values-1", "type": "motivation", "content": "Combines product sensibility with engineering depth; cares about reliability, clarity, and tasteful design." },
-  { "id": "values-2", "type": "motivation", "content": "Seeks mentors and communities that push him to pursue bigger, more ambitious builds with real users." }
+  { "id": "hobby-guitar-1", "type": "hobby", "content": "Plays guitar; treats music as a creative reset and a way to sharpen focus." },
+  { "id": "hobby-hiking-1", "type": "hobby", "content": "Hiking/outdoors for balance and clarity; enjoys exploring trails around Georgia and abroad." },
+  { "id": "hobby-travel-1", "type": "hobby", "content": "Travel: enjoys discovering new cultures and food; international upbringing informs comfort in diverse teams." },
+
+  { "id": "values-1", "type": "motivation", "content": "Values reliability, clarity, and tasteful design—prefers minimal, professional interfaces with thoughtful motion." },
+  { "id": "values-2", "type": "motivation", "content": "Seeks environments that combine pace with craftsmanship—ship fast without compromising code quality or UX." },
+
+  { "id": "edu-gt-1", "type": "experience", "content": "Georgia Tech: CS/CE coursework includes Python, Java, data structures, OOP, systems, and AI foundations." },
+  { "id": "edu-gt-2", "type": "experience", "content": "Plans to take CREATE-X and build a venture-backed-ready MVP; interested in enterprise AI and consumer productivity." },
+
+  { "id": "skill-ops-1", "type": "skill", "content": "Testing & QA: pytest, mocking, fixtures, coverage; regression suites for backend reliability and CI gating." },
+  { "id": "skill-ops-2", "type": "skill", "content": "APIs: RESTful design, error handling, observability (logs/metrics), and schema evolution without breaking consumers." },
+  { "id": "skill-ops-3", "type": "skill", "content": "Security & Access: auth flows, Supabase RLS policies, least-privilege practices for data access." },
+
+  { "id": "kb-rag-1", "type": "skill", "content": "Light RAG: JSON knowledge base → Chroma embeddings → retrieve top-k → prompt Gemini/OpenAI with grounded context." },
+  { "id": "kb-rag-2", "type": "skill", "content": "Chunking heuristics: 150–300 token chunks, overlap for entity continuity, metadata tags for targeted retrieval." },
+  { "id": "kb-rag-3", "type": "skill", "content": "Evaluation: uses RAGAS/hand-checks to tune chunk size, top-k, and prompt structure to maximize answer faithfulness." },
+
+  { "id": "exp-gt-trading-1", "type": "experience", "content": "GT Trading Club (2024–present): equities analysis; experience leading a team in the Wharton Global HS Investment Competition." },
+
+  { "id": "highlight-best-exp-1", "type": "experience", "content": "Best recent professional experience: GFO-X internship—production-grade AI agents, measurable QA gains, multi-team adoption." },
+  { "id": "highlight-best-exp-2", "type": "experience", "content": "Best recent product build: SlideIn—hackathon win + viral traction; demonstrates AI, growth, and product polish in one project." },
+  { "id": "highlight-best-exp-3", "type": "experience", "content": "Most relevant mobile work: LinkUp—auth, access control, social graph, and event management on Supabase with modern RN UX." },
+
+  { "id": "answer-style-1", "type": "motivation", "content": "When asked about professional highlights, prioritize GFO-X, SlideIn, LinkUp, and Agent Zeta before volunteer work." },
+  { "id": "answer-style-2", "type": "motivation", "content": "When asked about technical depth, surface FastAPI, Python/pytest, LangChain, vLLM, embeddings/RAG, Neo4j, and Supabase." }
 ]
