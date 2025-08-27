@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUp } from "lucide-react";
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || (import.meta as any).env?.MODE === 'production' ? '/api' : 'http://127.0.0.1:8000';
+const API_BASE = (import.meta as any).env?.MODE === 'production'
+  ? (import.meta as any).env?.VITE_API_BASE_URL
+  : 'http://127.0.0.1:8000';
 
 interface Message {
   id: string;
@@ -70,7 +72,6 @@ export function ChatSection() {
     setIsLoading(true);
 
     try {
-      // For non-streaming responses, we'll handle the response directly
       const aiMessageId = (Date.now() + 1).toString();
       let responseReceived = false;
 
@@ -78,7 +79,6 @@ export function ChatSection() {
         if (!delta) return;
         responseReceived = true;
         setMessages(prev => {
-          // Create the AI message with the full response
           setIsLoading(false);
           return [
             ...prev,
@@ -93,7 +93,6 @@ export function ChatSection() {
       };
 
       await sendToBackend(userMessage.content, appendDelta);
-      // If no response was received, show a fallback
       if (!responseReceived) {
         setIsLoading(false);
         setMessages(prev => ([
@@ -117,8 +116,6 @@ export function ChatSection() {
       setMessages(prev => [...prev, errorMessage]);
       setIsLoading(false);
     } finally {
-      // isLoading is cleared on first delta or on fallback/error; no-op here to avoid flicker
-      // Refocus input after sending message
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
@@ -135,10 +132,7 @@ export function ChatSection() {
     if (!resp.ok) throw new Error(`Backend error: ${resp.status}`);
     const data = await resp.json().catch(() => ({} as any));
     const text = (data as any)?.answer ?? '';
-    if (text) {
-      // For non-streaming responses, send the entire text as one delta
-      onDelta(text);
-    }
+    if (text) onDelta(text);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -165,7 +159,6 @@ export function ChatSection() {
 
   return (
     <section id="chat" className="relative py-20 md:py-24 overflow-hidden bg-white border-t border-border/20">
-      
       <div className="max-w-4xl mx-auto px-6 sm:px-8 text-center">
         {/* Title */}
         <motion.div
@@ -179,7 +172,7 @@ export function ChatSection() {
             What would you like to know?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Ask my personal agent anything about my experience, projects, or background
+            Ask me anything about my experience, projects, or background
           </p>
         </motion.div>
 
@@ -224,13 +217,8 @@ export function ChatSection() {
                       </motion.div>
                     ))}
                   </AnimatePresence>
-                  
                   {isLoading && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex justify-start"
-                    >
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
                       <div className="max-w-[80%] rounded-2xl px-4 py-3 bg-gray-100 text-gray-900 text-left">
                         <div className="flex items-center gap-2">
                           <div className="flex gap-1">
@@ -242,7 +230,6 @@ export function ChatSection() {
                       </div>
                     </motion.div>
                   )}
-                  
                   <div ref={messagesEndRef} />
                 </div>
               </div>
@@ -250,7 +237,7 @@ export function ChatSection() {
           )}
         </AnimatePresence>
 
-        {/* Main Input Bar (moved below messages) */}
+        {/* Main Input Bar */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -272,7 +259,7 @@ export function ChatSection() {
               />
               <Button
                 onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isLoading}
+                disabled={!inputValue.trim() || isLoading || !API_BASE}
                 size="icon"
                 className="bg-gray-900 hover:bg-gray-800 text-white h-10 w-10 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 mr-1"
               >
