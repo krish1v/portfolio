@@ -55,7 +55,7 @@ export function ProjectsSection() {
         image: "/images/projects/slidein.png",
         liveUrl: "https://slidein.now",
         githubUrl: "https://github.com/krishiv-khatri/SlideIn",
-        detailedDescription: "SlideIn is the first B2C focused SaaS outreach platform that reimagines how people connect with audiences. lideIn generates personalized emails, automates sending, and tracks responses with real-time analytics. After launch, the project gained viral traction on Twitter and LinkedIn, reaching over 500,000+ impressions within a week, with an evolving product vision of becoming a 'Tinder for outreach.'",
+        detailedDescription: "SlideIn is the first B2C focused SaaS outreach platform that reimagines how people connect with audiences. SlideIn generates personalized emails, automates sending, and tracks responses with real-time analytics. After launch, the project gained viral traction on Twitter and LinkedIn, reaching over 500,000+ impressions within a week, with an evolving product vision of becoming a 'Tinder for outreach.'",
         features: [
           "🏆 1st place at GT Shipathon 2025 hackathon",
           "Viral launch with 500,000+ impressions across social media",

@@ -205,7 +205,7 @@ export function HeroSection() {
                 variants={fadeUpVariants}
                 custom={4}
               >
-                Passionate about leveraging technology to foster innovation and create meaningful impact through software engineering and product development.
+                Passionate about building software and products that turn ideas into meaningful impact.
               </motion.p>
 
               {/* Contact Information */}
