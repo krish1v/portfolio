@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import { FaLinkedin, FaEnvelope, FaTwitter } from "react-icons/fa";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState, useRef } from "react";
@@ -66,6 +66,13 @@ export function HeroSection() {
   
   const yTransform = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
+  const handleDownloadResume = () => {
+    const link = document.createElement('a');
+    link.href = '/resume.pdf';
+    link.download = 'Krishiv_Khatri_Resume.pdf';
+    link.click();
+  };
+
   return (
     <section 
       ref={containerRef}
@@ -81,6 +88,20 @@ export function HeroSection() {
         <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col gap-4 p-4 sm:p-6 rounded-lg shadow-xl bg-white border border-gray-200">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold text-gray-900">Resume</DialogTitle>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="mr-12"
+            >
+              <Button
+                onClick={handleDownloadResume}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download
+              </Button>
+            </motion.div>
           </div>
           <div className="flex-1 relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
             <iframe

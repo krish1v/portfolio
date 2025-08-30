@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,12 +26,33 @@ export function Navbar() {
     { name: "Contact", href: "#contact" },
   ];
 
+  const handleDownloadResume = () => {
+    const link = document.createElement('a');
+    link.href = '/resume.pdf';
+    link.download = 'Krishiv_Khatri_Resume.pdf';
+    link.click();
+  };
+
   return (
     <>
       <Dialog open={showResume} onOpenChange={setShowResume}>
         <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col gap-4 p-4 sm:p-6 rounded-lg shadow-xl bg-white border border-gray-200">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold text-gray-900">Resume</DialogTitle>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="mr-12"
+            >
+              <Button
+                onClick={handleDownloadResume}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download
+              </Button>
+            </motion.div>
           </div>
           <div className="flex-1 relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
             <iframe
