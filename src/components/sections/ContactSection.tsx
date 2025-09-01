@@ -118,7 +118,7 @@ export function ContactSection() {
                       krishivkhatri@gatech.edu
                     </a>
                     <a
-                      href="mailto:krishivkhatri2409@gmail.com"
+                      href="mailto:khatrikrishiv@gmail.com"
                       className="block text-muted-foreground hover:text-foreground transition-colors"
                     >
                       krishivkhatri2409@gmail.com

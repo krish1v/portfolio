@@ -1,14 +1,38 @@
+User-agent: *
+Allow: /
+Allow: /favicon.ico
+Disallow: /backend/
+Disallow: /server/
+Disallow: /api/
+Disallow: /*.json$
+
+# Specific crawlers
 User-agent: Googlebot
 Allow: /
+Allow: /images/
+Allow: /resume.pdf
+Allow: /favicon.ico
 
 User-agent: Bingbot
 Allow: /
+Allow: /images/
+Allow: /resume.pdf
+Allow: /favicon.ico
 
 User-agent: Twitterbot
 Allow: /
+Allow: /images/
 
 User-agent: facebookexternalhit
 Allow: /
+Allow: /images/
 
-User-agent: *
+User-agent: LinkedInBot
 Allow: /
+Allow: /images/
+
+# Sitemap
+Sitemap: https://krishivkhatri.com/sitemap.xml
+
+# Host directive
+Host: https://krishivkhatri.com
