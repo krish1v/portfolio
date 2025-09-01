@@ -36,7 +36,7 @@ export function ContactSection() {
           from_name: formState.name,
           from_email: formState.email,
           message: formState.message,
-          to_email: 'krishivkhatri2409@gmail.com',
+          to_email: 'khatrikrishiv@gmail.com',
         },
         '0ZVvpJIoY9GMc830y' // Public Key
       );
@@ -121,7 +121,7 @@ export function ContactSection() {
                       href="mailto:khatrikrishiv@gmail.com"
                       className="block text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      krishivkhatri2409@gmail.com
+                      khatrikrishiv@gmail.com
                     </a>
                     <a
                       href="tel:+17709915129"
