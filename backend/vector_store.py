@@ -3,6 +3,8 @@ import os
 import uuid
 from typing import Any, Dict, List, Tuple, Optional
 
+import json as _json
+import httpx
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qm
 
@@ -129,23 +131,73 @@ def initialize_chroma(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> Tuple[No
 def query_top_k(query_text: str, k: int = 3) -> List[Dict[str, Any]]:
     client = _client_instance()
     qvec = embed_texts([query_text])[0]
-    results = client.search(
-        collection_name=_QDRANT_COLLECTION,
-        query_vector=qvec,
-        limit=k,
-        with_payload=True,
-    )
-    items: List[Dict[str, Any]] = []
-    for r in results:
-        payload = r.payload or {}
-        items.append(
-            {
-                "id": r.id,
-                "type": payload.get("type"),
-                "content": payload.get("content"),
-                "distance": 1 - float(r.score or 0.0),
-            }
+    try:
+        # Preferred modern client method per Qdrant client README: query_points
+        qres = client.query_points(
+            collection_name=_QDRANT_COLLECTION,
+            query=qvec,
+            limit=k,
+            with_payload=True,
         )
-    return items
+        # qres may have `.points` or be an iterable directly (older client variants)
+        points = getattr(qres, "points", qres) or []
+        items: List[Dict[str, Any]] = []
+        for r in points:
+            # r can be model or dict-like
+            rid = getattr(r, "id", None)
+            rscore = getattr(r, "score", None)
+            rpayload = getattr(r, "payload", None)
+            if isinstance(r, dict):
+                rid = r.get("id", rid)
+                rscore = r.get("score", rscore)
+                rpayload = r.get("payload", rpayload)
+            payload = rpayload or {}
+            items.append(
+                {
+                    "id": rid,
+                    "type": payload.get("type"),
+                    "content": payload.get("content"),
+                    "distance": 1 - float(rscore or 0.0),
+                }
+            )
+        return items
+    except AttributeError:
+        # Fallback: Query API (v1.10+) via HTTP; if unavailable, fall back to legacy /points/search
+        if not _QDRANT_URL:
+            raise RuntimeError("QDRANT_URL is not set")
+        headers = {"Content-Type": "application/json"}
+        if _QDRANT_API_KEY:
+            headers["api-key"] = _QDRANT_API_KEY
+
+        def _parse_results(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+            res = (data or {}).get("result", []) or []
+            out: List[Dict[str, Any]] = []
+            for r in res:
+                payload = r.get("payload") or {}
+                score = r.get("score") or 0.0
+                out.append(
+                    {
+                        "id": r.get("id"),
+                        "type": payload.get("type"),
+                        "content": payload.get("content"),
+                        "distance": 1 - float(score),
+                    }
+                )
+            return out
+
+        with httpx.Client(timeout=30) as http:
+            # Try Query API first (recommended): /points/query with {"query": [..]}
+            query_url = f"{_QDRANT_URL.rstrip('/')}/collections/{_QDRANT_COLLECTION}/points/query"
+            query_payload = {"query": qvec, "limit": k, "with_payload": True}
+            resp = http.post(query_url, headers=headers, content=_json.dumps(query_payload))
+            if resp.status_code < 300:
+                return _parse_results(resp.json())
+
+            # Fallback to legacy Search API: /points/search with {"vector": [..]}
+            search_url = f"{_QDRANT_URL.rstrip('/')}/collections/{_QDRANT_COLLECTION}/points/search"
+            search_payload = {"vector": qvec, "limit": k, "with_payload": True}
+            resp2 = http.post(search_url, headers=headers, content=_json.dumps(search_payload))
+            resp2.raise_for_status()
+            return _parse_results(resp2.json())
 
 
