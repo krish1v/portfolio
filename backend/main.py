@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
 from .vector_store import initialize_chroma, query_top_k
-from .gemini_client import generate_answer
+from .gemini_client import generate_answer, warm_gemini
 
 
 logger = logging.getLogger(__name__)
@@ -106,6 +106,34 @@ def startup_index():
 def health() -> Dict[str, str]:
     return {"status": "ok"}
 
+
+@app.get("/warmup")
+def warmup() -> Dict[str, str]:
+    """
+    Warm critical dependencies without incurring model token costs.
+    - Initializes Qdrant client and checks collection
+    - Initializes Gemini client and model instance
+    """
+    try:
+        # Warm Qdrant client and metadata path
+        try:
+            from .vector_store import _client_instance, _collection_exists
+            client = _client_instance()
+            _ = client.get_collections()
+            qdrant_status = "ok" if _collection_exists() else "collection_missing"
+        except Exception as e:
+            qdrant_status = f"error:{e}"
+
+        # Warm Gemini (no generate_content call)
+        try:
+            model_name = warm_gemini()
+            gemini_status = f"ok:{model_name}"
+        except Exception as e:
+            gemini_status = f"error:{e}"
+
+        return {"status": "ok", "qdrant": qdrant_status, "gemini": gemini_status}
+    except Exception:
+        return {"status": "ok"}
 
 @app.post("/chat")
 def chat(req: ChatRequest):

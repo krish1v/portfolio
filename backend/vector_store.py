@@ -30,10 +30,24 @@ def _client_instance() -> QdrantClient:
 
 def _ensure_collection(dim: int) -> None:
     client = _client_instance()
-    client.recreate_collection(
-        collection_name=_QDRANT_COLLECTION,
-        vectors_config=qm.VectorParams(size=dim, distance=qm.Distance.COSINE),
-    )
+    # Create if missing; avoid recreate to prevent cold-start cost
+    try:
+        client.get_collection(collection_name=_QDRANT_COLLECTION)
+        return
+    except Exception:
+        client.create_collection(
+            collection_name=_QDRANT_COLLECTION,
+            vectors_config=qm.VectorParams(size=dim, distance=qm.Distance.COSINE),
+        )
+
+
+def _collection_exists() -> bool:
+    try:
+        client = _client_instance()
+        client.get_collection(collection_name=_QDRANT_COLLECTION)
+        return True
+    except Exception:
+        return False
 
 
 def load_knowledge(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> List[Dict[str, Any]]:
@@ -62,6 +76,10 @@ def load_knowledge(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> List[Dict[s
 def initialize_chroma(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> Tuple[None, int]:
     # Kept name for compatibility with imports; initializes Qdrant
     client = _client_instance()
+    # If collection already exists, skip heavy re-embedding on cold start
+    if _collection_exists():
+        return None, 0
+
     entries = load_knowledge(knowledge_path)
     if not entries:
         _ensure_collection(dim=768)

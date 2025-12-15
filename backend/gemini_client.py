@@ -23,6 +23,18 @@ def _configure_client() -> None:
     genai.configure(api_key=api_key)
 
 
+def warm_gemini() -> str:
+    """
+    Initialize Gemini client and model objects without generating content.
+    Useful for cold-start warmup without incurring token costs.
+    """
+    _configure_client()
+    chosen_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+    # Instantiate once to warm underlying HTTP/TLS and model metadata fetch
+    genai.GenerativeModel(model_name=chosen_model)
+    return chosen_model
+
+
 def generate_answer(prompt: str, stream: bool = False, model_name: Optional[str] = None):
     """
     Call Google's Gemini API and return either full text or a streaming generator of deltas.
