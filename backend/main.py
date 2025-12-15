@@ -178,7 +178,7 @@ def chat(req: ChatRequest):
         return JSONResponse({
             "answer": text,
             "context": retrieved,
-            "model": os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            "model": os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite"),
         })
     except HTTPException:
         raise
