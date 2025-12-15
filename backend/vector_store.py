@@ -50,6 +50,23 @@ def _collection_exists() -> bool:
         return False
 
 
+def _points_count() -> int:
+    """
+    Return number of points in the collection. If collection missing, returns 0.
+    """
+    try:
+        client = _client_instance()
+        res = client.count(collection_name=_QDRANT_COLLECTION, exact=True)
+        # qdrant-client may return a dataclass or dict-like
+        if hasattr(res, "count"):
+            return int(getattr(res, "count"))
+        if isinstance(res, dict) and "count" in res:
+            return int(res["count"])
+        return 0
+    except Exception:
+        return 0
+
+
 def load_knowledge(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> List[Dict[str, Any]]:
     if not os.path.exists(knowledge_path):
         raise FileNotFoundError(
@@ -76,15 +93,19 @@ def load_knowledge(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> List[Dict[s
 def initialize_chroma(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> Tuple[None, int]:
     # Kept name for compatibility with imports; initializes Qdrant
     client = _client_instance()
-    # If collection already exists, skip heavy re-embedding on cold start
-    if _collection_exists():
-        return None, 0
+    exists = _collection_exists()
 
     entries = load_knowledge(knowledge_path)
     if not entries:
-        _ensure_collection(dim=768)
+        if not exists:
+            _ensure_collection(dim=768)
         return None, 0
 
+    # If collection exists and already has vectors, skip heavy re-embedding
+    if exists and _points_count() > 0:
+        return None, 0
+
+    # Create collection if missing, then (re)index all entries
     documents = [e["content"] for e in entries]
     vectors = embed_texts(documents)
     dim = len(vectors[0]) if vectors else 768

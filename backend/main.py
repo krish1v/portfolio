@@ -117,12 +117,15 @@ def warmup() -> Dict[str, str]:
     try:
         # Warm Qdrant client and metadata path
         try:
-            from .vector_store import _client_instance, _collection_exists
+            from .vector_store import _client_instance, _collection_exists, _points_count
             client = _client_instance()
             _ = client.get_collections()
-            qdrant_status = "ok" if _collection_exists() else "collection_missing"
+            exists = _collection_exists()
+            points = _points_count() if exists else 0
+            qdrant_status = "ok" if exists else "collection_missing"
         except Exception as e:
             qdrant_status = f"error:{e}"
+            points = 0
 
         # Warm Gemini (no generate_content call)
         try:
@@ -131,7 +134,7 @@ def warmup() -> Dict[str, str]:
         except Exception as e:
             gemini_status = f"error:{e}"
 
-        return {"status": "ok", "qdrant": qdrant_status, "gemini": gemini_status}
+        return {"status": "ok", "qdrant": qdrant_status, "qdrant_points": points, "gemini": gemini_status}
     except Exception:
         return {"status": "ok"}
 
