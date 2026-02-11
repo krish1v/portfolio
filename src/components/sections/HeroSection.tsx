@@ -250,7 +250,7 @@ export function HeroSection() {
                   whileHover={{ x: 6, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="font-bold text-gray-900">Phone:</span> (404) 269-3031
+                  <span className="font-bold text-gray-900">Phone:</span> (470) 313-5969
                 </motion.a>
               </motion.div>
 
