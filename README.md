@@ -1,201 +1,162 @@
-# Krishiv Khatri - Personal Portfolio & AI Chatbot
+# Krishiv Khatri - Personal Portfolio & AI Agent
 
-A modern, interactive portfolio website featuring an AI-powered chatbot that can answer questions about Krishiv's background, projects, and experience. Built with React, TypeScript, and a custom RAG (Retrieval-Augmented Generation) backend.
+A personal portfolio website with an AI agent that can answer questions about my background, projects, and experience. The agent uses a RAG (Retrieval-Augmented Generation) architecture with Qdrant vector database and Google Gemini API.
 
-## 🚀 Live Demo
+## Live Demo
 
-**Portfolio**: [krishivkhatri.com](https://krishivkhatri.com)  
-**Chat with AI**: Try the interactive chatbot on the site!
+**Portfolio**: [krishivkhatri.com](https://krishivkhatri.com)
 
-## ✨ Key Features
+## How the AI Agent Works
 
-### 🤖 **AI Chatbot Implementation**
-- **Personal Knowledge Base**: Powered by a comprehensive knowledge base containing Krishiv's experience, projects, and background
-- **RAG Architecture**: Uses ChromaDB + Gemini API for intelligent, context-aware responses
-- **Real-time Streaming**: Supports both streaming and non-streaming responses
-- **Semantic Search**: Advanced embedding-based retrieval for relevant answers
-- **Custom Training**: Trained on personal data including projects, skills, and experiences
+The chatbot is built as a personal knowledge assistant that can answer questions about my experience, projects, and background. Here's the technical implementation:
 
-### 🎨 **Modern Portfolio Design**
-- **Responsive Design**: Optimized for all devices with smooth animations
-- **Dark/Light Theme**: Dynamic theme switching with system preference detection
-- **Interactive Sections**: Hero, About, Projects, Experience, and Contact sections
-- **Framer Motion**: Smooth animations and micro-interactions throughout
-- **Professional UI**: Clean, modern design using shadcn/ui components
+### Architecture Overview
 
-### 🔧 **Technical Stack**
+**Frontend**: React/TypeScript application with a chat interface
+**Backend**: FastAPI server hosted on Render
+**Vector Database**: Qdrant cloud cluster for storing document embeddings
+**LLM**: Google Gemini API for generating responses
+**Embeddings**: Google Gemini embedding model for semantic search
 
-**Frontend:**
+### RAG Pipeline
+
+1. **Knowledge Base**: Personal information is stored in `knowledge.json` with structured entries for projects, experience, skills, etc.
+
+2. **Document Indexing**: On startup, the FastAPI server:
+   - Loads the knowledge base
+   - Generates embeddings using Google Gemini embedding API
+   - Stores embeddings in a Qdrant cloud cluster
+
+3. **Query Processing**: When a user asks a question:
+   - The query is embedded using the same Gemini embedding model
+   - Qdrant performs similarity search to find relevant knowledge entries
+   - Top matching entries are retrieved as context
+
+4. **Response Generation**: 
+   - Retrieved context is combined with the user's question
+   - Sent to Google Gemini API with a system prompt to act as my personal agent
+   - Response is streamed back to the user
+
+### Technical Stack
+
+**Frontend**:
 - React 18 + TypeScript
-- Vite for fast development and building
-- Tailwind CSS for styling
-- shadcn/ui component library
+- Vite build tool
+- Tailwind CSS + shadcn/ui components
 - Framer Motion for animations
-- React Router for navigation
 
-**Backend:**
-- FastAPI (Python) with async support
-- ChromaDB for vector storage
-- Google Gemini API for AI responses
-- Sentence Transformers for embeddings
-- Pydantic for data validation
+**Backend**:
+- FastAPI with Python 3.13
+- Qdrant Python client for vector operations
+- Google GenerativeAI SDK
+- Hosted on Render with automatic deployments
 
-**AI/ML:**
-- RAG (Retrieval-Augmented Generation) pipeline
-- MiniLM embeddings for semantic search
-- Context-aware prompting
-- Streaming response support
+**Infrastructure**:
+- Qdrant Cloud cluster for vector storage
+- Render for FastAPI hosting
+- Vercel for frontend deployment
 
-## 🛠️ Local Development
+## Local Development
 
 ### Prerequisites
 - Node.js 18+ and npm
 - Python 3.10+
 - Google Gemini API key
+- Qdrant cloud cluster (or local Qdrant instance)
 
-### Quick Start
+### Setup
 
-1. **Clone the repository**
+1. **Clone and install dependencies**
 ```bash
 git clone <your-repo-url>
 cd personal-portfolio
-```
-
-2. **Install frontend dependencies**
-```bash
 npm install
-```
 
-3. **Set up Python environment**
-```bash
+# Set up Python environment
 python -m venv .venv
-# Windows
-.\.venv\Scripts\Activate.ps1
-# macOS/Linux
-source .venv/bin/activate
-
+source .venv/bin/activate  # or .venv\Scripts\Activate.ps1 on Windows
 pip install -r backend/requirements.txt
 ```
 
-4. **Configure environment variables**
-Create a `.env` file in the root directory:
+2. **Environment variables**
+Create a `.env` file:
 ```bash
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-1.5-flash
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+GEMINI_MODEL=gemini-2.5-flash-lite
+QDRANT_URL=https://your-cluster.qdrant.io:6333
+QDRANT_API_KEY=your_qdrant_api_key
+QDRANT_COLLECTION=knowledge
 ```
 
-5. **Start development servers**
+3. **Start development servers**
 ```bash
-# Start both frontend and backend
-npm run dev
-
-# Or start them separately:
-npm run server  # Backend only
-npm run dev:mock  # Frontend with mock backend
+npm run dev  # Starts both frontend and backend
 ```
 
-The frontend will be available at `http://localhost:5173` and the backend at `http://localhost:8000`.
+Frontend: `http://localhost:5173`  
+Backend: `http://localhost:8000`
 
-## 🤖 Chatbot Architecture
+## API Endpoints
 
-### Knowledge Base
-The chatbot uses a structured knowledge base (`knowledge.json`) containing:
-- **Experience**: Internships, projects, and leadership roles
-- **Skills**: Technical skills, frameworks, and tools
-- **Projects**: Detailed project descriptions and tech stacks
-- **Background**: Education, interests, and personal information
-
-### RAG Pipeline
-1. **Indexing**: Knowledge base is chunked and embedded using MiniLM
-2. **Retrieval**: User queries are embedded and matched against stored chunks
-3. **Generation**: Top relevant chunks are sent to Gemini API with context
-4. **Response**: AI generates personalized answers based on retrieved information
-
-### API Endpoints
 - `GET /health` - Health check
-- `POST /chat` - Chat endpoint with streaming support
+- `GET /warmup` - Warm up Qdrant and Gemini connections
+- `POST /chat` - Chat with the AI agent
   - `stream=false`: Returns complete response
-  - `stream=true`: Returns NDJSON stream
+  - `stream=true`: Returns NDJSON stream for real-time responses
 
-## 📁 Project Structure
+## Knowledge Base Structure
 
-```
-├── src/
-│   ├── components/          # React components
-│   │   ├── sections/        # Page sections (Hero, About, etc.)
-│   │   ├── ui/             # shadcn/ui components
-│   │   └── ...
-│   ├── hooks/              # Custom React hooks
-│   ├── lib/                # Utility functions
-│   └── styles/             # Global styles
-├── backend/
-│   ├── main.py             # FastAPI application
-│   ├── embeddings.py       # Embedding utilities
-│   ├── gemini_client.py    # Gemini API integration
-│   ├── vector_store.py     # ChromaDB operations
-│   └── requirements.txt    # Python dependencies
-├── public/
-│   ├── images/             # Static images
-│   ├── favicon.ico         # Site favicon
-│   ├── robots.txt          # SEO configuration
-│   └── sitemap.xml         # Search engine sitemap
-├── knowledge.json          # AI knowledge base
-└── package.json            # Node.js dependencies
+The `knowledge.json` file contains structured information:
+```json
+[
+  {
+    "id": "unique-id",
+    "type": "experience|project|skill|background",
+    "content": "Detailed information about the topic"
+  }
+]
 ```
 
-## 🚀 Deployment
+The agent is trained to respond as if it's me, using this knowledge base to provide accurate information about my background and experience.
 
-### Frontend (Vercel/Netlify)
-```bash
-npm run build
-# Deploy the dist/ folder
+## Project Structure
+
+```
+├── src/                    # React frontend
+│   ├── components/         # UI components
+│   ├── hooks/             # Custom React hooks
+│   └── lib/               # Utilities
+├── backend/               # FastAPI server
+│   ├── main.py           # Main application
+│   ├── embeddings.py     # Gemini embedding integration
+│   ├── gemini_client.py  # Gemini API client
+│   ├── vector_store.py   # Qdrant operations
+│   └── requirements.txt  # Python dependencies
+├── knowledge.json        # Personal knowledge base
+└── package.json         # Frontend dependencies
 ```
 
-### Backend (Railway/Render)
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port $PORT
-```
+## Deployment
 
-## 🔧 Customization
+### Frontend (Vercel)
+The React app is deployed to Vercel with automatic deployments from the main branch.
 
-### Adding Content
-1. **Update knowledge.json**: Add new entries with `id`, `type`, and `content`
-2. **Restart backend**: The knowledge base is re-indexed on startup
-3. **Test chatbot**: Ask questions about your new content
+### Backend (Render)
+The FastAPI server is hosted on Render with the following configuration:
+- **Build Command**: `pip install -r backend/requirements.txt`
+- **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+- **Environment Variables**: Set `GEMINI_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`
 
-### Styling
-- **Theme**: Modify `src/components/ThemeProvider.tsx`
-- **Components**: Customize shadcn/ui components in `src/components/ui/`
-- **Animations**: Adjust Framer Motion variants in section components
+### Vector Database (Qdrant Cloud)
+Using a managed Qdrant cluster for vector storage with automatic backups and scaling.
 
-### SEO Optimization
-- **Meta tags**: Update `index.html` for better search visibility
-- **Sitemap**: Modify `public/sitemap.xml` for new pages
-- **Robots**: Configure `public/robots.txt` for crawler access
+## Updating the Knowledge Base
 
-## 📊 Performance
+To add new information:
+1. Update `knowledge.json` with new entries
+2. Deploy to Render (triggers automatic re-indexing)
+3. The agent will have access to the new information
 
-- **Lighthouse Score**: 95+ across all metrics
-- **SEO Optimized**: Complete meta tags, structured data, and sitemap
-- **Fast Loading**: Optimized images, code splitting, and lazy loading
-- **Mobile First**: Responsive design with touch-friendly interactions
+## License
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test the chatbot with new knowledge
-5. Submit a pull request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-**Built with ❤️ by Krishiv Khatri**  
-*Computer Science Student at Georgia Tech | AI & Software Engineer*
+MIT License - feel free to use this as a template for your own portfolio.
