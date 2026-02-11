@@ -152,10 +152,24 @@ Using a managed Qdrant cluster for vector storage with automatic backups and sca
 
 ## Updating the Knowledge Base
 
-To add new information:
-1. Update `knowledge.json` with new entries
-2. Deploy to Render (triggers automatic re-indexing)
-3. The agent will have access to the new information
+When you first deploy, the backend indexes `knowledge.json` into Qdrant. After that, it does **not** reindex on deploy (it skips if the collection already has points). So when you change `knowledge.json` or switch embedding models, you need to reindex manually.
+
+**Option 1 – HTTP endpoint (e.g. from Render)**  
+Set `REINDEX_SECRET` in your backend env. Then:
+
+```bash
+curl -X POST "https://your-backend.onrender.com/reindex" \
+  -H "X-Reindex-Secret: your-secret"
+```
+
+**Option 2 – Local script**  
+With `.env` in the project root (Qdrant + Gemini keys), from repo root:
+
+```bash
+PYTHONPATH=. python -c "from backend.vector_store import reindex; print(reindex())"
+```
+
+After a successful reindex, the agent uses the new knowledge and embedding model.
 
 ## License
 

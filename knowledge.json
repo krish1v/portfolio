@@ -3,7 +3,7 @@
   { "id": "intro-2", "type": "motivation", "content": "He optimizes for speed of learning and user impact: prototype fast, test with real users, iterate toward polished, reliable systems." },
   { "id": "intro-3", "type": "motivation", "content": "International background (Hong Kong → Georgia Tech) shapes his bias for cross-cultural collaboration, clear communication, and community building." },
 
-  { "id": "exp-gfox-1", "type": "experience", "content": "GFO-X — Software Developer Intern (Summer 2024): built AI-driven Jira/Confluence agents for document classification and retrieval using embeddings + cosine similarity." },
+  { "id": "exp-gfox-1", "type": "experience", "content": "GFO-X — Software Developer Intern (Summer 2025): built AI-driven Jira/Confluence agents for document classification and retrieval using embeddings + cosine similarity." },
   { "id": "exp-gfox-2", "type": "experience", "content": "At GFO-X, implemented a RAG pipeline (vLLM + LangChain + PyTorch) and scored >90% on RAGAS metrics for internal knowledge tasks." },
   { "id": "exp-gfox-3", "type": "experience", "content": "Designed a ReAct multi-agent workflow with gap analysis, automated ticketing, progress tracking, and sentiment checks for engineering ops." },
   { "id": "exp-gfox-4", "type": "experience", "content": "Cut QA time by ~70% using pytest suites and automation; shipped a production-ready PoC in <2 months adopted by 5+ business units." },

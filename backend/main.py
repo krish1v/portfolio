@@ -3,12 +3,12 @@ import logging
 import os
 from typing import Any, Dict, Generator, List, Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
-from .vector_store import initialize_chroma, query_top_k
+from .vector_store import initialize_chroma, query_top_k, reindex
 from .gemini_client import generate_answer, warm_gemini
 
 
@@ -105,6 +105,26 @@ def startup_index():
 @app.get("/health")
 def health() -> Dict[str, str]:
     return {"status": "ok"}
+
+
+@app.post("/reindex")
+def trigger_reindex(request: Request) -> Dict[str, Any]:
+    """
+    Reindex the knowledge base: delete existing Qdrant vectors and re-embed
+    all entries from knowledge.json. Use after updating knowledge or changing
+    the embedding model. Requires X-Reindex-Secret header to match REINDEX_SECRET env.
+    """
+    secret = os.getenv("REINDEX_SECRET")
+    if secret:
+        provided = request.headers.get("X-Reindex-Secret") or request.query_params.get("secret")
+        if provided != secret:
+            raise HTTPException(status_code=403, detail="Invalid or missing reindex secret")
+    try:
+        count = reindex()
+        return {"status": "ok", "indexed": count}
+    except Exception as e:
+        logger.exception("reindex_failed: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/warmup")

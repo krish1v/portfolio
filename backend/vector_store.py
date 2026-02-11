@@ -92,6 +92,46 @@ def load_knowledge(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> List[Dict[s
     return cleaned
 
 
+def _index_entries(entries: List[Dict[str, Any]], client: QdrantClient) -> int:
+    """Embed entries and upsert into the collection. Caller must ensure collection exists with correct dim."""
+    if not entries:
+        return 0
+    documents = [e["content"] for e in entries]
+    vectors = embed_texts(documents)
+    dim = len(vectors[0]) if vectors else 768
+    _ensure_collection(dim=dim)
+    points = []
+    for idx, e in enumerate(entries):
+        pid = uuid.uuid5(uuid.NAMESPACE_URL, e["id"]).hex
+        points.append(
+            qm.PointStruct(
+                id=pid,
+                vector=vectors[idx],
+                payload={"type": e["type"], "content": e["content"], "orig_id": e["id"]},
+            )
+        )
+    client.upsert(collection_name=_QDRANT_COLLECTION, points=points)
+    return len(entries)
+
+
+def reindex(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> int:
+    """
+    Clear the knowledge collection and re-embed all entries from knowledge.json.
+    Use after changing knowledge.json or switching embedding models.
+    Returns the number of entries indexed.
+    """
+    client = _client_instance()
+    entries = load_knowledge(knowledge_path)
+    if not entries:
+        if _collection_exists():
+            client.delete_collection(collection_name=_QDRANT_COLLECTION)
+        _ensure_collection(dim=768)
+        return 0
+    if _collection_exists():
+        client.delete_collection(collection_name=_QDRANT_COLLECTION)
+    return _index_entries(entries, client)
+
+
 def initialize_chroma(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> Tuple[None, int]:
     # Kept name for compatibility with imports; initializes Qdrant
     client = _client_instance()
@@ -108,24 +148,7 @@ def initialize_chroma(knowledge_path: str = _KNOWLEDGE_PATH_DEFAULT) -> Tuple[No
         return None, 0
 
     # Create collection if missing, then (re)index all entries
-    documents = [e["content"] for e in entries]
-    vectors = embed_texts(documents)
-    dim = len(vectors[0]) if vectors else 768
-    _ensure_collection(dim=dim)
-
-    points = []
-    for idx, e in enumerate(entries):
-        # Qdrant IDs must be unsigned int or UUID - derive a stable UUID from entry id
-        pid = uuid.uuid5(uuid.NAMESPACE_URL, e["id"]).hex
-        points.append(
-            qm.PointStruct(
-                id=pid,
-                vector=vectors[idx],
-                payload={"type": e["type"], "content": e["content"], "orig_id": e["id"]},
-            )
-        )
-    client.upsert(collection_name=_QDRANT_COLLECTION, points=points)
-    return None, len(entries)
+    return None, _index_entries(entries, client)
 
 
 def query_top_k(query_text: str, k: int = 3) -> List[Dict[str, Any]]:
