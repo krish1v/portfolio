@@ -94,5 +94,34 @@
   { "id": "highlight-best-exp-3", "type": "experience", "content": "Most relevant mobile work: LinkUp—auth, access control, social graph, and event management on Supabase with modern RN UX." },
 
   { "id": "answer-style-1", "type": "motivation", "content": "When asked about professional highlights, prioritize GFO-X, SlideIn, LinkUp, and Agent Zeta before volunteer work." },
-  { "id": "answer-style-2", "type": "motivation", "content": "When asked about technical depth, surface FastAPI, Python/pytest, LangChain, vLLM, embeddings/RAG, Neo4j, and Supabase." }
+  { "id": "answer-style-2", "type": "motivation", "content": "When asked about technical depth, surface FastAPI, Python/pytest, LangChain, vLLM, embeddings/RAG, Neo4j, and Supabase." },
+  { "id": "exp-inferencelab-1", "type": "experience", "content": "Inference Lab (Georgia Tech): working on fine-tuning and building agentic frameworks grounded in physics and engineering knowledge for structured reasoning tasks." },
+  { "id": "exp-inferencelab-2", "type": "experience", "content": "Focus on knowledge-integrated AI: connecting geometry, physics intuition, and structured data into models that can reason beyond pattern matching." },
+  { "id": "exp-inferencelab-3", "type": "experience", "content": "Explores agents that can interpret engineering context, infer constraints, and assist with technical decision-making workflows." },
+
+  { "id": "proj-risklayer-1", "type": "project", "content": "Enterprise Risk Agent Layer — building a framework to make agent workflows risk-aware, interpretable, and grounded in operational constraints." },
+  { "id": "proj-risklayer-2", "type": "project", "content": "Focuses on modeling entities, dependencies, and failure modes so AI agents can reason about tradeoffs, compliance, and downstream impact." },
+  { "id": "proj-risklayer-3", "type": "project", "content": "Explores 'risk as infrastructure' — a layer that sits between AI agents and enterprise systems to prevent brittle automation." },
+
+  { "id": "proj-gfox-extension-1", "type": "project", "content": "Continuing work beyond the GFO-X internship: evolving multi-agent workflows into reusable infrastructure for enterprise knowledge retrieval and operations support." },
+
+  { "id": "proj-slidein-growth-1", "type": "project", "content": "SlideIn growth: reached 500k+ impressions through organic distribution; iterated quickly based on user feedback loops and analytics." },
+  { "id": "proj-slidein-growth-2", "type": "project", "content": "Handles high-volume automated outreach workflows (10k+ emails/day scale testing) with focus on reliability, logging, and delivery performance." },
+
+  { "id": "proj-linkup-traction-1", "type": "project", "content": "LinkUp strategy: starting with manually curated events + direct organizer relationships to validate demand before scaling discovery algorithms." },
+  { "id": "proj-linkup-traction-2", "type": "project", "content": "Focus on social layer depth: friend graph, visibility controls, and private event dynamics as core engagement drivers." },
+
+  { "id": "community-startupex-2", "type": "experience", "content": "Startup Exchange: helps connect AI, FinTech, PM, and VC student communities to co-host events and grow the builder ecosystem at Georgia Tech." },
+
+  { "id": "interest-agents-1", "type": "interest", "content": "Agentic systems: interested in orchestration, evaluation loops, and long-running agents that operate inside real production environments." },
+  { "id": "interest-risk-1", "type": "interest", "content": "Risk-aware AI: how to make autonomous systems more trustworthy, interpretable, and aligned with enterprise constraints." },
+
+  { "id": "motivation-builder-1", "type": "motivation", "content": "Views speed as a competitive advantage: prefers shipping imperfect but functional systems and refining through real-world feedback." },
+  { "id": "motivation-builder-2", "type": "motivation", "content": "Drawn to infrastructure-layer problems: knowledge retrieval, reasoning engines, and systems that sit beneath multiple products." },
+
+  { "id": "skill-agents-1", "type": "skill", "content": "Agent orchestration: ReAct patterns, tool-use planning, multi-step workflows, and evaluation-driven iteration." },
+  { "id": "skill-agents-2", "type": "skill", "content": "System design for AI products: focuses on reliability, observability, and deployable pipelines rather than demo-only models." },
+
+  { "id": "highlight-current-1", "type": "experience", "content": "Current focus: building at the intersection of agents, knowledge infrastructure, and enterprise workflows." },
+  { "id": "highlight-current-2", "type": "experience", "content": "Exploring startup ideas around agent reliability, risk awareness, and knowledge-grounded automation." }
 ]
