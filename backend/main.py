@@ -108,35 +108,57 @@ def health() -> Dict[str, str]:
 
 
 @app.get("/warmup")
-def warmup() -> Dict[str, str]:
+def warmup() -> Dict[str, Any]:
     """
     Warm critical dependencies without incurring model token costs.
     - Initializes Qdrant client and checks collection
     - Initializes Gemini client and model instance
     """
+    qdrant_status: str = "unknown"
+    points: int = 0
+    gemini_status: str = "unknown"
+
+    # Warm Qdrant client and check collection/points
     try:
-        # Warm Qdrant client and metadata path
+        from .vector_store import _client_instance
+        client = _client_instance()
+        # Try preferred single-collection probe; fall back to listing collections
+        exists = False
         try:
-            from .vector_store import _client_instance, _collection_exists, _points_count
-            client = _client_instance()
-            _ = client.get_collections()
-            exists = _collection_exists()
-            points = _points_count() if exists else 0
-            qdrant_status = "ok" if exists else "collection_missing"
-        except Exception as e:
-            qdrant_status = f"error:{e}"
-            points = 0
+            client.get_collection(collection_name=os.getenv("QDRANT_COLLECTION", "knowledge"))
+            exists = True
+        except Exception:
+            try:
+                _ = client.get_collections()
+                # If listing works, we still don't know if our collection exists; don't mark exists=True here
+            except Exception:
+                pass
+        if not exists:
+            # Try private helper if present
+            try:
+                from .vector_store import _collection_exists
+                exists = _collection_exists()
+            except Exception:
+                exists = False
+        if exists:
+            try:
+                from .vector_store import _points_count
+                points = _points_count()
+            except Exception:
+                points = 0
+        qdrant_status = "ok" if exists else "collection_missing"
+    except Exception as e:
+        qdrant_status = f"error:{e}"
+        points = 0
 
-        # Warm Gemini (no generate_content call)
-        try:
-            model_name = warm_gemini()
-            gemini_status = f"ok:{model_name}"
-        except Exception as e:
-            gemini_status = f"error:{e}"
+    # Warm Gemini (no generate_content call)
+    try:
+        model_name = warm_gemini()
+        gemini_status = f"ok:{model_name}"
+    except Exception as e:
+        gemini_status = f"error:{e}"
 
-        return {"status": "ok", "qdrant": qdrant_status, "qdrant_points": points, "gemini": gemini_status}
-    except Exception:
-        return {"status": "ok"}
+    return {"status": "ok", "qdrant": qdrant_status, "qdrant_points": str(points), "gemini": gemini_status}
 
 @app.post("/chat")
 def chat(req: ChatRequest):
