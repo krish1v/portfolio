@@ -1,171 +1,263 @@
 import { useEffect, useRef, useState } from "react";
-import { Calendar } from "lucide-react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ExperienceItem {
-  id: number;
-  title: string;
-  company: string;
+  org: string;
+  role: string;
+  place: string;
   period: string;
+  current?: boolean;
   description: string;
-  type: "work" | "education";
-  skills?: string[];
+  stack?: string;
+}
+
+// Ordered most recent → oldest, so the pan moves from the present backward.
+const experiences: ExperienceItem[] = [
+  {
+    org: "Amazon Web Services",
+    role: "Software Development Engineer, Q in Connect",
+    place: "Seattle, WA",
+    period: "May – Aug 2026",
+    current: true,
+    description:
+      "A tool-retrieval service for the AI agents behind Amazon Connect. It uses BM25, embeddings, and regex to reach about 97% accuracy, cut input tokens by up to 93%, and make the first token about 27% faster.",
+    stack: "BM25 · Embeddings · Tool orchestration",
+  },
+  {
+    org: "GFO-X",
+    role: "AI Engineer",
+    place: "Hong Kong",
+    period: "May – Jul 2025",
+    description:
+      "A RAG engine (vLLM, LangGraph, PyTorch) for internal Jira and Confluence agents. It scored over 90% on RAGAS, cut ticket resolution time by about 40%, and reduced QA cycles by about 70%.",
+    stack: "vLLM · LangGraph · PyTorch",
+  },
+  {
+    org: "Georgia Tech",
+    role: "BS Computer Science",
+    place: "Atlanta, GA",
+    period: "2024 – 2028",
+    description:
+      "Concentrations in AI and Theory. GPA 3.94, Faculty Honors and Dean's List.",
+  },
+  {
+    org: "FundFluent",
+    role: "Product Development Intern",
+    place: "Hong Kong",
+    period: "Jun – Aug 2023",
+    description:
+      "Automated SEO pipeline (50+ posts, ~120% more organic traffic) and product analytics over 50K+ user events. Won HKU's Most Outstanding Student.",
+    stack: "Python · Pandas · SQL",
+  },
+  {
+    org: "Hong Kong Polytechnic University",
+    role: "Research Assistant",
+    place: "Hong Kong",
+    period: "Apr – Aug 2023",
+    description:
+      "Researched proton-exchange membrane fuel cells (PEMFC) in a competitive program, and built and tested a model car powered by a passive fuel-cell stack.",
+    stack: "Fuel Cells · Modeling · Prototyping",
+  },
+  {
+    org: "West Island School",
+    role: "IB Diploma",
+    place: "Hong Kong",
+    period: "2017 – 2024",
+    description:
+      "IB 44, ACT 35. Head Student; founded the Young Entrepreneurs Club; debate, olympiads, volleyball, and service leadership.",
+  },
+];
+
+const NODE_W = 460;
+
+function Dot({ current }: { current?: boolean }) {
+  return (
+    <span className="relative grid place-items-center">
+      {current && (
+        <span className="absolute h-5 w-5 rounded-full border border-gray-900/40 animate-ping" />
+      )}
+      <span
+        className={
+          current
+            ? "h-3.5 w-3.5 rounded-full bg-black ring-2 ring-white"
+            : "h-3 w-3 rounded-full bg-black"
+        }
+      />
+    </span>
+  );
+}
+
+function Card({ item, fixedHeight }: { item: ExperienceItem; fixedHeight?: boolean }) {
+  return (
+    <div
+      className={`bg-white border border-gray-900/15 rounded-lg p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ${
+        fixedHeight ? "h-[17rem] flex flex-col justify-center" : ""
+      }`}
+    >
+      {item.current && (
+        <span className="inline-flex items-center gap-1.5 mb-2 text-[0.7rem] font-mono uppercase tracking-[0.14em] text-gray-900">
+          <span className="h-1.5 w-1.5 rounded-full bg-black" />
+          Current
+        </span>
+      )}
+      <h3 className="font-display text-lg font-semibold text-gray-900 leading-tight">
+        {item.org}
+      </h3>
+      <p className="mt-1 text-sm text-gray-600">
+        {item.role} · {item.place}
+      </p>
+      <p className="mt-3 text-sm leading-relaxed text-gray-600">{item.description}</p>
+      {item.stack && (
+        <p className="mt-3 text-xs font-mono text-gray-400">{item.stack}</p>
+      )}
+    </div>
+  );
 }
 
 export function ExperienceSection() {
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const [visibleItems, setVisibleItems] = useState<number[]>([]);
+  const isMobile = useIsMobile();
+  const reduce = useReducedMotion();
+  const horizontal = !isMobile && !reduce;
 
-  const experiences: ExperienceItem[] = [
-    {
-      id: 1,
-      title: "Software Engineer, AI",
-      company: "Global Futures and Options Ltd (GFO-X)",
-      period: "May 2025 - July 2025",
-      description: "Worked on AI-driven solutions within Europe’s first regulated digital asset derivatives exchange. Built a retrieval-augmented generation (RAG) engine with a self hosted vLLM, LangChain, and PyTorch, achieving >90% across RAGAS metrics for Jira/Confluence agents. Developed a Confluence scraper and document classifier, ingesting 1,000+ pages into PostgreSQL for fast semantic search and knowledge retrieval. Designed a ReAct-based multi-agent system to handle gap analysis, automated ticket creation, progress tracking, and sentiment monitoring. Reduced QA time by 70% with automated testing and shipped a production-ready PoC in under two months, enabling 5+ business units including infrastructure, market ops, quant, and compliance to pilot AI workflows.",
-      type: "work",
-      skills: ["Python", "FastAPI", "LangChain", "PyTorch", "PostgreSQL", "ReAct", "RAGAS", "Asyncio", "Docker", "Git"]
-    },
-    {
-      id: 2,
-      title: "Bachelor of Science in Computer Engineering",
-      company: "Georgia Institute of Technology",
-      period: "Aug 2024 - Present",
-      description: "Concentration in Artificial Intelligence and People with a minor in Business. Maintaining a 4.0 GPA while building startups, participating in hackathons, and being a part of clubs like Startup Exchange, Venture Capital Club, and Trading@GT.",
-      type: "education"
-    },
-    {
-      id: 3,
-      title: "Product Development Intern",
-      company: "FundFluent Limited.",
-      period: "Jun 2023 - Aug 2023",
-      description: "Worked across AI, data, and strategy at a VC-backed startup helping SMEs raise $20M+. Developed an SEO pipeline with LLMs, analyzed product usage to guide v2 launch, and pitched the roadmap to win HKU’s Most Outstanding Student Prize.",
-      type: "work",
-      skills: ["Python", "SQL", "Data Analysis", "Strategy"]
-    },
-    {
-      id: 4,
-      title: "Research Assistant",
-      company: "The Hong Kong Polytechnic University",
-      period: "Apr 2023 - Aug 2023",
-      description: "Conducted research on proton-exchange membrane fuel cells (PEMFC) as part of a competitive PolyU reseach program. Built and tested a model car powered by a passive fuel cell stack to evaluate performance and sustainability impact.",
-      type: "work",
-      skills: ["Engineering Research", "Fuel Cell", "Modeling", "Prototype Testing"]
-    },
-    {
-      id: 5,
-      title: "High School Diploma",
-      company: "West Island School",
-      period: "Aug 2017 - May 2024",
-      description: "Graduated with International Baccalaureate Diploma (Score: 44), ACT: 35. Head Student · Founder, Young Entrepreneurs Club · Debate · Physics & Econ Olympiads · Volleyball · Service & Leadership (Kids4Kids, Borneo, Diwali Ball)",
-      type: "education"
-    }
-  ];
+  const sectionRef = useRef<HTMLElement>(null);
+  const [dims, setDims] = useState({ maxX: 0, pad: 24 });
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 0.1", "end end"],
+  });
+  const smooth = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    mass: 0.22,
+  });
+  const x = useTransform(smooth, (v) => -dims.maxX * v);
+  // Heading lifts away and fades out as soon as the horizontal pan begins.
+  const headingOpacity = useTransform(smooth, [0, 0.08], [1, 0]);
+  const headingY = useTransform(smooth, [0, 0.08], [0, -70]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = Number(entry.target.getAttribute('data-id'));
-            if (!visibleItems.includes(id)) {
-              setVisibleItems(prev => [...prev, id]);
-            }
-          }
-        });
-      },
-      { threshold: 0.2, rootMargin: "0px 0px -100px 0px" }
-    );
-
-    const timelineItems = document.querySelectorAll(".timeline-item");
-    timelineItems.forEach((item) => {
-      observer.observe(item);
-    });
-
-    return () => {
-      timelineItems.forEach((item) => {
-        observer.unobserve(item);
-      });
+    if (!horizontal) return;
+    const measure = () => {
+      const vw = window.innerWidth;
+      const pad = Math.max(24, (vw - NODE_W) / 2);
+      const trackWidth = pad * 2 + experiences.length * NODE_W;
+      setDims({ maxX: Math.max(0, trackWidth - vw), pad });
     };
-  }, [visibleItems]);
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [horizontal]);
 
-  return (
-    <section id="experience" className="relative py-20 md:py-24 border-t border-border/20">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(56,189,248,0.03),transparent_50%)]" />
-      </div>
-      <div className="section relative">
-        <h2 className="section-title">Experience</h2>
-        <p className="text-muted-foreground max-w-2xl mt-4">
-          My professional journey and educational background in the world of technology.
-        </p>
-
-        <div className="mt-12 relative max-w-[1400px] mx-auto" ref={timelineRef}>
-          {/* Timeline stem - centered and adjusted for wider layout */}
-          <div className="absolute left-0 md:left-1/2 top-0 h-full w-[2px] bg-gradient-to-b from-blue/30 via-blue/20 to-border transform md:-translate-x-1/2 z-0"></div>
-
-          {/* Timeline items */}
-          <div className="space-y-16 relative z-10">
-            {experiences.map((item, index) => (
-              <div
-                key={item.id}
-                data-id={item.id}
-                className={`timeline-item transition-all duration-700 ${
-                  index % 2 === 0 
-                    ? "md:flex-row-reverse timeline-right" 
-                    : "timeline-left"
-                } flex flex-col md:flex-row gap-8 opacity-0 translate-y-8`}
-                style={{ 
-                  opacity: visibleItems.includes(item.id) ? 1 : 0,
-                  transform: visibleItems.includes(item.id) ? 'translateY(0)' : 'translateY(2rem)',
-                  transitionDelay: `${(visibleItems.indexOf(item.id) * 150)}ms` 
-                }}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-[-6px] md:left-1/2 transform md:-translate-x-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-blue to-blue/80 flex items-center justify-center z-10 shadow-lg shadow-blue/25 mt-8">
-                  <div className="w-1.5 h-1.5 rounded-full bg-background"></div>
-                </div>
-
-                {/* Content - wider cards */}
-                <div className="w-full md:w-[calc(50%-1.5rem)] ml-8 md:ml-0">
-                  <div className="relative group">
-                    {/* Subtle gradient background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue/[0.02] to-purple/[0.02] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
-                    <div className="relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl p-6 md:p-8 transition-all duration-300 hover:translate-y-[-3px] hover:shadow-xl hover:shadow-blue/5 hover:border-blue/20">
-                      <div className="mb-5 flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="text-xl font-semibold group-hover:text-blue transition-colors duration-300">{item.title}</h3>
-                          <p className="text-muted-foreground font-medium mt-1">{item.company}</p>
-                        </div>
-                        <span className="bg-muted/50 text-muted-foreground text-xs rounded-full px-3 py-1 flex items-center gap-1.5 whitespace-nowrap flex-shrink-0">
-                          <Calendar className="h-3 w-3" />
-                          {item.period}
-                        </span>
-                      </div>
-
-                      <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent my-5"></div>
-
-                      <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-
-                      {item.skills && (
-                        <div className="flex flex-wrap gap-3 mt-5">
-                          {item.skills.map((skill) => (
-                            <span 
-                              key={skill} 
-                              className="px-3 py-1.5 rounded-full border border-muted/50 bg-card/60 backdrop-blur-sm text-sm font-medium transition-colors hover:border-blue/40 hover:bg-muted/50"
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+  // --- Mobile / reduced-motion: a clean vertical timeline (newest first) ---
+  if (!horizontal) {
+    return (
+      <section id="experience" className="relative bg-white border-t border-border/20 py-20">
+        <div className="section">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-gray-900">Experience</h2>
+          <div className="relative mt-12 pl-8">
+            <div className="absolute left-[5px] top-1.5 bottom-1.5 w-px bg-gray-900/20" />
+            {experiences.map((item) => (
+              <div key={item.org} className="relative pb-10 last:pb-0">
+                <span className="absolute -left-8 top-1.5">
+                  <Dot current={item.current} />
+                </span>
+                <p className="text-xs font-mono text-gray-500">{item.period}</p>
+                <div className="mt-2">
+                  <Card item={item} />
                 </div>
               </div>
             ))}
           </div>
         </div>
+      </section>
+    );
+  }
+
+  // --- Desktop: scroll-linked horizontal pan through time ---
+  return (
+    <section
+      id="experience"
+      ref={sectionRef}
+      className="relative bg-white border-t border-border/20"
+      style={{ height: `${Math.max(240, experiences.length * 58)}vh` }}
+    >
+      <div className="sticky top-0 h-screen overflow-hidden">
+        {/* Continuous time axis — fixed to the viewport so the line never breaks */}
+        <div className="pointer-events-none absolute inset-x-0 top-[54%] -translate-y-1/2 h-px bg-gray-900/25 z-0" />
+
+        {/* Heading + hint — lifts out of frame once the pan begins */}
+        <motion.div
+          style={{ opacity: headingOpacity, y: headingY }}
+          className="absolute top-0 left-0 right-0 z-20 max-w-7xl mx-auto px-6 sm:px-8 pt-6"
+        >
+          <div className="flex items-end justify-between gap-6">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-gray-900">Experience</h2>
+            <p className="hidden sm:block text-xs font-mono uppercase tracking-[0.16em] text-gray-400">
+              Scroll · recent → earliest
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Panning track (nodes only; the axis line stays fixed above) */}
+        <motion.div
+          style={{ x }}
+          className="absolute inset-x-0 top-[8vh] bottom-0 z-10 flex items-stretch will-change-transform"
+        >
+          {/* leading gutter */}
+          <div className="shrink-0" style={{ width: dims.pad }} />
+
+          {experiences.map((item, i) => {
+            const above = i % 2 === 0;
+            return (
+              <div
+                key={item.org}
+                className="relative h-full shrink-0"
+                style={{ width: NODE_W }}
+              >
+                {/* card */}
+                <div
+                  className={`absolute left-1/2 -translate-x-1/2 w-[360px] ${
+                    above ? "bottom-1/2 mb-8" : "top-1/2 mt-8"
+                  }`}
+                >
+                  <Card item={item} fixedHeight />
+                </div>
+
+                {/* connector */}
+                <div
+                  className={`absolute left-1/2 -translate-x-1/2 w-px bg-gray-900/40 ${
+                    above ? "bottom-1/2 h-8" : "top-1/2 h-8"
+                  }`}
+                />
+
+                {/* dot on the axis */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                  <Dot current={item.current} />
+                </div>
+
+                {/* period on the opposite side of the card */}
+                <div
+                  className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-mono text-gray-500 ${
+                    above ? "top-1/2 mt-5" : "bottom-1/2 mb-5"
+                  }`}
+                >
+                  {item.period}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* trailing gutter */}
+          <div className="shrink-0" style={{ width: dims.pad }} />
+        </motion.div>
       </div>
     </section>
   );

@@ -78,6 +78,7 @@ export default {
 			fontFamily: {
 				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
 				display: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+				name: ['EB Garamond', 'Garamond', 'Georgia', 'serif'],
 				mono: ['JetBrains Mono', 'monospace']
 			},
 			fontSize: {

@@ -1,5 +1,5 @@
 /* Import fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* Tailwind directives */
 @tailwind base;
@@ -118,7 +118,7 @@
   input[type="search"],
   input[type="url"],
   textarea {
-    @apply font-mono text-sm;
+    @apply font-sans text-sm;
   }
 }
 
@@ -133,12 +133,7 @@
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold mb-8 relative;
-  }
-
-  .section-title::after {
-    content: "";
-    @apply absolute left-0 bottom-0 h-1 w-16 bg-blue rounded-full -mb-4;
+    @apply text-3xl md:text-4xl font-bold mb-8;
   }
 
   .skill-bar {
